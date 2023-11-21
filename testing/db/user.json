@@ -1,0 +1,42 @@
+[{
+  "userId": "string1",
+  "username": "string",
+  "stack-selection": ["string1"],
+  "is-guest": "boolean1",
+  "history": [
+    {
+      "question-id": "string1",
+      "question-content": {
+        "prompt": "string1",
+        "responses": [
+          {
+            "response-content": {
+              "text": "string1"
+            },
+            "is-correct": "boolean1"
+          }
+        ]
+      }
+    }
+  ],
+  "userAnswer": [
+    {
+      "question-id": "string2",
+      "question-content": {
+        "prompt": "string2",
+        "responses": [
+          {
+            "response-content": {
+              "text": "string2"
+            },
+            "is-correct": "boolean2"
+          }
+        ]
+      },
+      "response-content": {
+        "text": "string2"
+      },
+      "is-correct": "boolean2"
+    }
+  ]
+}]
