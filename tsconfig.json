@@ -1,5 +1,6 @@
 {
   "include": ["routes", "server.ts"],
+  "exclude": ["./routes/**/*.test.ts"],
   "compilerOptions": {
       "module": "CommonJS",
       "outDir": "dist",
