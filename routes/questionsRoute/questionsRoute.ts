@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const router = express.Router();
 
 router.get('/:userid', (req, res) => {
@@ -11,4 +11,4 @@ router.get('/:userid', (req, res) => {
   res.sendStatus(200);
 })
 
-module.exports = router
+export default router

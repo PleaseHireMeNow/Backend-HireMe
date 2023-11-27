@@ -17,7 +17,7 @@ describe("is userid in database", () => {
         done();
       })
   })
-  it("correct user id should give us a 200", (done) => {
+  it("incorrect user id should give us a 403", (done) => {
     request(app)
       .get(`/api/questions/${incorrectUserid}`)
       .end((err: Object, res: Response) => {
