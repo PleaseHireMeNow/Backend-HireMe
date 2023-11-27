@@ -1,5 +1,7 @@
 import express from 'express';
 // const express = require('express');
+const { FieldValue } = require("firebase-admin/firestore");
+const { db } = require(); 
 
 import questionsRouter from './routes/questionsRoute/questionsRoute'
 // const answerHistoryRouter = require('./routes/answerHistoryRoute/answerHistory')
