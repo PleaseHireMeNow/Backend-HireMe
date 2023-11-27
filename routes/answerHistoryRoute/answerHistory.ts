@@ -1,20 +1,22 @@
-import express, { Request, Response } from 'express';
+import * as express from 'express';
 const router = express.Router();
 
-router.get('/:userid', (req, res) => {
-
+router.get('/', (req, res) => {
+  console.log('in get router ');
   
+  res.sendStatus(200)
+
 })
 
 router.post('/:userid', (req, res) => {
 
-  
+
 })
 
-router.delete('/:userid/:questionId', (req, res) => {
+router.delete('/:userid/:questionid', (req, res) => {
 
-  
+
 })
 
 
-module.exports = router
+export default router
