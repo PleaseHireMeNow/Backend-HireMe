@@ -15,13 +15,17 @@ router.get('/:userid', (req: Request, res: Response) => {
 
 })
 
-router.post('/:userid', (req, res) => {
+router.post('/:userid', (req: Request, res: Response) => {
+// console.log('req.params is:', req.params);
 
+
+  res.sendStatus(200)
 
 })
 
 router.delete('/:userid/:questionid', (req, res) => {
-
+  
+  res.sendStatus(200)
 
 })
 
