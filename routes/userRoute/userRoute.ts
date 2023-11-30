@@ -5,26 +5,26 @@ const router = express.Router();
 
 router.get('/:userId', (req: Request, res: Response) => {
 
-  for (let user of userJson)
-  if (user.userId === req.params.userId ) {
-    return res.status(200).send(user)
-  } else {
-    return res.status(403)
-  }
+
+if (userJson[0].userId === req.params.userId) {
+  res.status(200).send(userJson[0].userId)
+} else {
+  res.sendStatus(403)
+}
 
 });
 
 
 router.delete('/:userId', (req: Request, res: Response) => {
 
-  for (let user of userJson)
-  if (user.userId === req.params.userId ) {
-    return res.status(200).send(user)
+
+  if (userJson[0].userId === req.params.userId) {
+    res.sendStatus(200)
   } else {
-    return res.status(403)
+    res.sendStatus(403)
   }
 
-  
+
 });
 
 
