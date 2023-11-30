@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/:userId', (req: Request, res: Response) => {
 
+
 if (userJson[0].userId === req.params.userId) {
   res.status(200).send(userJson[0].userId)
 } else {
