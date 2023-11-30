@@ -28,7 +28,7 @@ describe("stackSelection route test", () => {
         }
         done();
       });
-  });
+  }, 1000);
 
   test("stackSelection GET route incorrect userid, should send 403", done => {
     request(app)
@@ -42,7 +42,7 @@ describe("stackSelection route test", () => {
           done()
         }
       });
-  });
+  }, 1000);
 
 
 // POST TESTS
@@ -57,7 +57,7 @@ test("stackSelection POST route success test, should send status 200", done => {
       expect(res.status).toBe(200)
       done();
     });
-});
+}, 1000);
 
 test("stackSelection POST route incorrect userid, should send 403", done => {
   request(app)
@@ -71,7 +71,7 @@ test("stackSelection POST route incorrect userid, should send 403", done => {
         done()
       }
     });
-});
+}, 1000);
 
 // PUT TESTS
 test("stackSelection PUT route success test, should send status 200", done => {
@@ -84,10 +84,10 @@ test("stackSelection PUT route success test, should send status 200", done => {
       }
       expect(res.status).toBe(200)
       done();
-    }), 1000;
-});
+    });
+}, 1000);
 
-test.only("stackSelection PUT route incorrect userid, should send 403", done => {
+test("stackSelection PUT route incorrect userid, should send 403", done => {
   request(app)
     .put(`/api/stackSelection/${incorrectUserid}`)
     .expect(403)
@@ -99,6 +99,36 @@ test.only("stackSelection PUT route incorrect userid, should send 403", done => 
         done()
       }
     });
-});
+}, 1000);
+
+
+// DELETE TESTS
+test.only("stackSelection DELETE route success test, should send status 200", done => {
+  // start dummy server
+  request(app)
+    .delete(`/api/stackSelection/${correctUserid}`)
+    .end((err: Object, res: Response) => {
+      if (err) {
+        console.error(err);
+      }
+      expect(res.status).toBe(200)
+      done();
+    });
+}, 1000);
+
+test.only("stackSelection DELETE route incorrect userid, should send 403", done => {
+  request(app)
+    .delete(`/api/stackSelection/${incorrectUserid}`)
+    .expect(403)
+    .end((err: Object, res: Response) => {
+      if (err) {
+        console.error(err);
+        done(err)
+      } else {
+        done()
+      }
+    });
+}, 1000);
+
 
 });
