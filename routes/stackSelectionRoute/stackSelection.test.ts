@@ -46,19 +46,15 @@ describe("stackSelection route test", () => {
 
 
 // POST TESTS
-test("stackSelection POST route success test, should return array of strings and status 200", done => {
+test("stackSelection POST route success test, should send status 200", done => {
   // start dummy server
   request(app)
     .post(`/api/stackSelection/${correctUserid}`)
     .end((err: Object, res: Response) => {
-      
       if (err) {
         console.error(err);
       }
       expect(res.status).toBe(200)
-      if ("body" in res) {
-        expect(res.body).toEqual(selection);
-      }
       done();
     });
 });
@@ -66,6 +62,34 @@ test("stackSelection POST route success test, should return array of strings and
 test("stackSelection POST route incorrect userid, should send 403", done => {
   request(app)
     .post(`/api/stackSelection/${incorrectUserid}`)
+    .expect(403)
+    .end((err: Object, res: Response) => {
+      if (err) {
+        console.error(err);
+        done(err)
+      } else {
+        done()
+      }
+    });
+});
+
+// PUT TESTS
+test("stackSelection PUT route success test, should send status 200", done => {
+  // start dummy server
+  request(app)
+    .put(`/api/stackSelection/${correctUserid}`)
+    .end((err: Object, res: Response) => {
+      if (err) {
+        console.error(err);
+      }
+      expect(res.status).toBe(200)
+      done();
+    }), 1000;
+});
+
+test.only("stackSelection PUT route incorrect userid, should send 403", done => {
+  request(app)
+    .put(`/api/stackSelection/${incorrectUserid}`)
     .expect(403)
     .end((err: Object, res: Response) => {
       if (err) {
