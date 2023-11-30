@@ -16,4 +16,17 @@ router.get("/:userid", (req, res) => {
   res.status(200).send(selection);
 });
 
+
+router.post("/:userid", (req, res) => {
+  // res.sendStatus(200)
+});
+
+router.put("/:userid", (req, res) => {
+  // res.sendStatus(200)
+});
+
+router.delete("/:userid", (req, res) => {
+  // res.sendStatus(200)
+});
+
 export default router;
