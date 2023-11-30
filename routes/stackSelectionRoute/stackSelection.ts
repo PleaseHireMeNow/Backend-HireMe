@@ -36,7 +36,12 @@ router.put("/:userid", (req, res) => {
 });
 
 router.delete("/:userid", (req, res) => {
-  // res.sendStatus(200)
+    //query the database to check if the user id is valid
+    if (req.params.userid !== "string1") {
+      res.sendStatus(403);
+    }
+    // Send status 200 and array of strings
+    res.sendStatus(200);
 });
 
 export default router;
