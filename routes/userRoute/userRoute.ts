@@ -1,29 +1,30 @@
 import express, { Request, Response } from 'express';
-
+import userJson from '../../testing/db/user.json'
 const router = express.Router();
 
 
 router.get('/:userId', (req: Request, res: Response) => {
-  const userId = req.params.userId;
 
-
-  if (!userId) {
-    return res.status(404).send('User not found');
+  for (let user of userJson)
+  if (user.userId === req.params.userId ) {
+    return res.status(200).send(user)
+  } else {
+    return res.status(403)
   }
 
-  res.status(200).json(userId);
 });
 
 
 router.delete('/:userId', (req: Request, res: Response) => {
-  const userId = req.params.userId;
 
-
-  if (!userId) {
-    return res.status(404).send('User not found');
+  for (let user of userJson)
+  if (user.userId === req.params.userId ) {
+    return res.status(200).send(user)
+  } else {
+    return res.status(403)
   }
 
-  res.status(200).send('User data deleted successfully');
+  
 });
 
 
