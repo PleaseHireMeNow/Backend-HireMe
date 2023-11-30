@@ -6,3 +6,5 @@ package-lock.json
 
 .ds_store
 .DS_STORE
+
+dist

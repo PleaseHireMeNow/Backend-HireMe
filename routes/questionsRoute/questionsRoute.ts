@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const router = express.Router();
 
 router.get('/:userid', (req, res) => {
@@ -6,9 +6,9 @@ router.get('/:userid', (req, res) => {
     //query the database to check if the user id is valid
     req.params.userid !== 'string1'
     ) {
-    res.sendStatus(404);
+    res.sendStatus(403);
   }
   res.sendStatus(200);
 })
 
-module.exports = router
+export default router
