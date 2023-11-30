@@ -38,7 +38,4 @@ describe("answer history route test", () => {
         }
       });
   });
-
-
-
 });
