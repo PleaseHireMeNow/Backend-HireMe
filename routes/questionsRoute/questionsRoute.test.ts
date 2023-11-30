@@ -1,8 +1,8 @@
-import express, {Application, Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 const app = require('../../server')
 const request = require('supertest')
 const usersInDatabase = require('../../testing/db/user.json')
-
+import question from '../../testing/db/question.json'
 describe("is userid in database", () => {
   const correctUserid = usersInDatabase[0].userId
   const incorrectUserid = ";ljasdj;lksad;jkfj;lkdsajkl;dfsaj;kl"
@@ -42,7 +42,10 @@ describe("crud operations on questions using mock database", () => {
           console.error(err);
         }
         expect(res.status).toBe(200)
-        // need to elaborate on expected results
+        if ("body" in res) {
+          expect(res.body).toEqual(question);
+          expect(res.body).toHaveLength(20);
+        }
         done();
       })
   })

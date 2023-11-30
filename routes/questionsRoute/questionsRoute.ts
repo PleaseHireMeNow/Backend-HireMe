@@ -1,4 +1,5 @@
 import express from 'express';
+import questions from '../../testing/db/question.json'
 const router = express.Router();
 
 router.get('/:userid', (req, res) => {
@@ -8,7 +9,7 @@ router.get('/:userid', (req, res) => {
     ) {
     res.sendStatus(403);
   }
-  res.sendStatus(200);
+  res.status(200).send(questions);
 })
 
 export default router
