@@ -20,13 +20,15 @@ const db = getFirestore()
 // connection for firestore emulator
 
 
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getFirestore, connectFirestoreEmulator, collection, DocumentData} from "firebase/firestore";
 
 // firebaseApps previously initialized using initializeApp()
-const db = getFirestore();
+export const db = getFirestore();
 connectFirestoreEmulator(db, '127.0.0.1', 8080);
 
 
-module.exports = { db }
+const createCollection = <T = DocumentData>(collectionName: string) => {
+  return collection(db, collectionName) as CollectionReference<T>
+}
 
 
