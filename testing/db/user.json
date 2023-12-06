@@ -1,84 +1,108 @@
-[{
-  "userId": "string1",
-  "username": "string",
-  "stack-selection": ["string1"],
-  "is-guest": "boolean1",
-  "history": [
-    {
-      "question-id": "string1",
-      "question-content": {
-        "prompt": "string1",
-        "responses": [
-          {
-            "response-content": {
-              "text": "string1"
-            },
-            "is-correct": "boolean1"
-          }
-        ]
+[
+  {
+    "userId": "string1",
+    "username": "string",
+    "stack-selection": [
+      {
+        "difficulty": {
+          "name": "entry-level",
+          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+        },
+        "topic": {
+          "name": "entry-level",
+          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+        }
       }
-    }
-  ],
-  "userAnswer": [
-    {
-      "question-id": "string2",
-      "question-content": {
-        "prompt": "string2",
-        "responses": [
-          {
-            "response-content": {
-              "text": "string2"
-            },
-            "is-correct": "boolean2"
-          }
-        ]
-      },
-      "response-content": {
-        "text": "string2"
-      },
-      "is-correct": "boolean2"
-    }
-  ]
-},
-{
-  "userId": "string2",
-  "username": "string",
-  "stack-selection": ["string1"],
-  "is-guest": "boolean1",
-  "history": [
-    {
-      "question-id": "string1",
-      "question-content": {
-        "prompt": "string1",
-        "responses": [
-          {
-            "response-content": {
-              "text": "string1"
-            },
-            "is-correct": "boolean1"
-          }
-        ]
+    ],
+    "is-guest": "boolean1",
+    "history": [
+      {
+        "question-id": "string1",
+        "question-content": {
+          "prompt": "string1",
+          "responses": [
+            {
+              "response-content": {
+                "text": "string1"
+              },
+              "is-correct": "boolean1"
+            }
+          ]
+        }
       }
-    }
-  ],
-  "userAnswer": [
-    {
-      "question-id": "string2",
-      "question-content": {
-        "prompt": "string2",
-        "responses": [
-          {
-            "response-content": {
-              "text": "string2"
-            },
-            "is-correct": "boolean2"
-          }
-        ]
-      },
-      "response-content": {
-        "text": "string2"
-      },
-      "is-correct": "boolean2"
-    }
-  ]
-}]
+    ],
+    "userAnswer": [
+      {
+        "question-id": "string2",
+        "question-content": {
+          "prompt": "string2",
+          "responses": [
+            {
+              "response-content": {
+                "text": "string2"
+              },
+              "is-correct": "boolean2"
+            }
+          ]
+        },
+        "response-content": {
+          "text": "string2"
+        },
+        "is-correct": "boolean2"
+      }
+    ]
+  },
+  {
+    "userId": "string2",
+    "username": "string",
+    "stack-selection": [
+      {
+        "difficulty": {
+          "name": "entry-level",
+          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+        },
+        "topic": {
+          "name": "entry-level",
+          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+        }
+      }
+    ],
+    "is-guest": "boolean1",
+    "history": [
+      {
+        "question-id": "string1",
+        "question-content": {
+          "prompt": "string1",
+          "responses": [
+            {
+              "response-content": {
+                "text": "string1"
+              },
+              "is-correct": "boolean1"
+            }
+          ]
+        }
+      }
+    ],
+    "userAnswer": [
+      {
+        "question-id": "string2",
+        "question-content": {
+          "prompt": "string2",
+          "responses": [
+            {
+              "response-content": {
+                "text": "string2"
+              },
+              "is-correct": "boolean2"
+            }
+          ]
+        },
+        "response-content": {
+          "text": "string2"
+        },
+        "is-correct": "boolean2"
+      }
+    ]
+  }
+]

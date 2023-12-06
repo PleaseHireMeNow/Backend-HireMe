@@ -1,6 +1,14 @@
-[
-  {
-    "name": "Javascript",
-    "icon-path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
-  }
-]
+{
+  "difficulty": [
+    {
+      "name": "entry-level",
+      "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    }
+],
+  "topics": [
+    {
+      "name": "Javascript",
+      "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    }
+  ]
+}
