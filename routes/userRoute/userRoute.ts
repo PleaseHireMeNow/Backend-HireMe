@@ -3,11 +3,11 @@ import userJson from '../../testing/db/user.json'
 const router = express.Router();
 
 
-router.get('/:userId', (req: Request, res: Response) => {
+router.get('/:userid', (req: Request, res: Response) => {
 
 
-if (userJson[0].userId === req.params.userId) {
-  res.status(200).send(userJson[0].userId)
+if (userJson[0].userid === req.params.userId) {
+  res.status(200).send(userJson[0].userid)
 } else {
   res.sendStatus(403)
 }
@@ -15,10 +15,10 @@ if (userJson[0].userId === req.params.userId) {
 });
 
 
-router.delete('/:userId', (req: Request, res: Response) => {
+router.delete('/:userid', (req: Request, res: Response) => {
 
 
-  if (userJson[0].userId === req.params.userId) {
+  if (userJson[0].user_id === req.params.userid) {
     res.sendStatus(200)
   } else {
     res.sendStatus(403)

@@ -21,11 +21,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use('/api/questions', questionsRouter);
-app.use('/api/answerHistory', answerHistoryRouter);
+app.use('/api/answer_history', answerHistoryRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/register', registerRouter);
-app.use('/api/stackOptions', stackOptionsRouter);
-app.use('/api/stackSelection', stackSelectionRouter);
+app.use('/api/stack_options', stackOptionsRouter);
+app.use('/api/stack_selection', stackSelectionRouter);
 app.use('/api/user', userRouter);
 
 if (process.env.NODE_ENV !== 'test'){
