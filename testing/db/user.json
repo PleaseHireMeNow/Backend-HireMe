@@ -2,30 +2,30 @@
   {
     "user_id": "string1",
     "username": "string",
-    "stack-selection": [
+    "stack_selection": [
       {
         "difficulty": {
-          "name": "entry-level",
-          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+          "name": "entry_level",
+          "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
         },
         "topic": {
-          "name": "entry-level",
-          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+          "name": "entry_level",
+          "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
         }
       }
     ],
-    "is-guest": "boolean1",
+    "is_guest": "boolean1",
     "history": [
       {
-        "question-id": "string1",
-        "question-content": {
+        "question_id": "string1",
+        "question_content": {
           "prompt": "string1",
           "responses": [
             {
-              "response-content": {
+              "response_content": {
                 "text": "string1"
               },
-              "is-correct": "boolean1"
+              "is_correct": "boolean1"
             }
           ]
         }
@@ -33,52 +33,55 @@
     ],
     "userAnswer": [
       {
-        "question-id": "string2",
-        "question-content": {
+        "question_id": "string2",
+        "question_content": {
           "prompt": "string2",
           "responses": [
             {
-              "response-content": {
+              "response_content": {
                 "text": "string2"
               },
-              "is-correct": "boolean2"
+              "is_correct": "boolean2"
             }
           ]
         },
-        "response-content": {
+        "response_content": {
           "text": "string2"
         },
-        "is-correct": "boolean2"
+        "is_correct": "boolean2"
       }
     ]
   },
+  
+  
+  
   {
     "user_id": "string2",
     "username": "string",
-    "stack-selection": [
+    "stack_selection": [
       {
         "difficulty": {
-          "name": "entry-level",
-          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+          "name": "entry_level",
+          "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
         },
         "topic": {
-          "name": "entry-level",
-          "iconPath": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+          "name": "entry_level",
+          "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
         }
       }
     ],
-    "is-guest": "boolean1",
+    "is_guest": "boolean1",
     "history": [
       {
-        "question-id": "string1",
-        "question-content": {
+        "question_id": "string1",
+        "question_content": {
           "prompt": "string1",
           "responses": [
             {
-              "response-content": {
+              "response_content": {
                 "text": "string1"
               },
-              "is-correct": "boolean1"
+              "is_correct": "boolean1"
             }
           ]
         }
@@ -86,22 +89,22 @@
     ],
     "userAnswer": [
       {
-        "question-id": "string2",
-        "question-content": {
+        "question_id": "string2",
+        "question_content": {
           "prompt": "string2",
           "responses": [
             {
-              "response-content": {
+              "response_content": {
                 "text": "string2"
               },
-              "is-correct": "boolean2"
+              "is_correct": "boolean2"
             }
           ]
         },
-        "response-content": {
+        "response_content": {
           "text": "string2"
         },
-        "is-correct": "boolean2"
+        "is_correct": "boolean2"
       }
     ]
   }
