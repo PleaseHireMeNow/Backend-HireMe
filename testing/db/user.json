@@ -1,6 +1,6 @@
 [
   {
-    "userId": "string1",
+    "user_id": "string1",
     "username": "string",
     "stack-selection": [
       {
@@ -53,7 +53,7 @@
     ]
   },
   {
-    "userId": "string2",
+    "user_id": "string2",
     "username": "string",
     "stack-selection": [
       {
