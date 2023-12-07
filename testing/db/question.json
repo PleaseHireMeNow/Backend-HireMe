@@ -24,7 +24,7 @@
         },
         {
           "answer_content": {
-            "text": "A server_side scripting language."
+            "text": "A server-side scripting language."
           },
           "is_correct": false
         }
@@ -108,7 +108,7 @@
         },
         {
           "answer_content": {
-            "text": "React has no support for third_party libraries."
+            "text": "React has no support for third-party libraries."
           },
           "is_correct": false
         },
@@ -120,7 +120,7 @@
         },
         {
           "answer_content": {
-            "text": "React is primarily designed for server_side scripting."
+            "text": "React is primarily designed for server-side scripting."
           },
           "is_correct": false
         }
@@ -172,7 +172,7 @@
         },
         {
           "answer_content": {
-            "text": "A design pattern for creating server_side rendering in React applications."
+            "text": "A design pattern for creating server-side rendering in React applications."
           },
           "is_correct": false
         },
@@ -242,7 +242,7 @@
         },
         {
           "answer_content": {
-            "text": "A feature for handling server_side rendering in Redux."
+            "text": "A feature for handling server-side rendering in Redux."
           },
           "is_correct": false
         },
@@ -390,13 +390,13 @@
       "answers": [
         {
           "answer_content": {
-            "text": "React is not a full_blown framework, and it might be difficult for beginners to understand."
+            "text": "React is not a full-blown framework, and it might be difficult for beginners to understand."
           },
           "is_correct": true
         },
         {
           "answer_content": {
-            "text": "React is limited to server_side rendering only."
+            "text": "React is limited to server-side rendering only."
           },
           "is_correct": false
         },
@@ -486,7 +486,7 @@
       "answers": [
         {
           "answer_content": {
-            "text": "Single source of truth, State is read_only, Changes are made with pure functions."
+            "text": "Single source of truth, State is read-only, Changes are made with pure functions."
           },
           "is_correct": true
         },
@@ -504,7 +504,7 @@
         },
         {
           "answer_content": {
-            "text": "Single source of truth, State is write_only, Changes are made with pure functions."
+            "text": "Single source of truth, State is write-only, Changes are made with pure functions."
           },
           "is_correct": false
         }
