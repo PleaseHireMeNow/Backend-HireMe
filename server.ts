@@ -1,6 +1,6 @@
 import express from 'express';
 // const express = require('express'); 
-
+import { importQuestionData } from './dataImport/questiondbfillerfunction';
 import questionsRouter from './routes/questionsRoute/questionsRoute'
 // const answerHistoryRouter = require('./routes/answerHistoryRoute/answerHistory')
 // const loginRouter = require('./routes/loginRoute/loginRoute')
@@ -25,5 +25,8 @@ app.use('/api/questions', questionsRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// importQuestionData();
+
 
 module.exports = app;

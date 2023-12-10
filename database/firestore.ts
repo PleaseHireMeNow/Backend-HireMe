@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+import { Question } from '../types/models/Questions'
+dotenv.config();
+
 //Conection to firebase cloud
 
 /*
@@ -14,15 +18,25 @@ const db = getFirestore()
 
 */
 
-
-
 //============================================================================
 // connection for firestore emulator
 
+const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurmentId: process.env.FIREBASE_MEASURMENTID,
+};
 
-import { getFirestore, connectFirestoreEmulator, collection, DocumentData} from "firebase/firestore";
 
-// firebaseApps previously initialized using initializeApp()
+
+import { getFirestore, connectFirestoreEmulator, collection, DocumentData, CollectionReference} from "firebase/firestore";
+import { initializeApp } from 'firebase/app'
+const app = initializeApp(firebaseConfig);
+
 export const db = getFirestore();
 connectFirestoreEmulator(db, '127.0.0.1', 8080);
 
@@ -31,4 +45,4 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
   return collection(db, collectionName) as CollectionReference<T>
 }
 
-
+export const questionsCol = createCollection<Question>('questions');
