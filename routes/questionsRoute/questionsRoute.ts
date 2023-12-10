@@ -2,18 +2,24 @@ import express from 'express';
 const router = express.Router();  
 import { FieldValue } from 'firebase/firestore';
 import {db} from '../../database/firestore'
+import {questionsCol} from '../../database/firestore'
+import { getDocs } from '@firebase/firestore'
 
+/*
 router.get('/allQuestions', async (req, res) => {
-    const questions = db.collection('questions');
-    const doc = await questions.get()
-    if (!doc.exists) {
-        return res.sendStatus(400)
-    }
-    console.log(doc);
+    // const questions = db.collection('questions');
+    const questionsDocs = await getDocs(questionsCol)
+    console.log(questionsDocs);
+
+    //
+    // if (!doc.exists) {
+    //     return res.sendStatus(400)
+    // }
+    // console.log(doc);
     // res.status(200).send(doc.data())
     res.sendStatus(200)
 });
- 
+*/ 
  
 router.get('/:userid', (req, res) => {
   if (
