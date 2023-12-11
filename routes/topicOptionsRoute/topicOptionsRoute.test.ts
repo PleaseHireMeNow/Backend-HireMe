@@ -6,7 +6,7 @@ import topicOptions from '../../testing/db/topic-options.json'
 describe("topic options route", () => {
   it.only("should get the topic options", (done) => {
     request(app)
-      .get(`/api/topic-options/`)
+      .get(`/api/topic_options/`)
       .end((err: Object, res: Response) => {
         if (err) {
           console.error(err);
