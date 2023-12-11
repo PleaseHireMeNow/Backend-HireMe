@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 // Dummy Data
-import selection from "../../testing/db/stack-selection.json";
+import selection from "../../testing/db/stack-options.json";
 
 // * ROUTES
 

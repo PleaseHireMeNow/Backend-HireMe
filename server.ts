@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv'
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 import questionsRouter from './routes/questionsRoute/questionsRoute'
 import answerHistoryRouter from './routes/answerHistoryRoute/answerHistory'
@@ -14,6 +15,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors());
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -33,5 +35,33 @@ if (process.env.NODE_ENV !== 'test'){
     console.log(`Server is running on port ${PORT}`);
   });
 } 
+
+
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, DocumentData } from 'firebase/firestore/lite';
+import { firebaseConfig } from './firebase.config'
+// TODO: Replace the following with your app's Firebase project configuration
+
+
+
+initializeApp(firebaseConfig);
+const db = getFirestore();
+console.log(typeof(db))
+// async function questions(db: object) {
+//   const questionsCollection = collection(getFirestore(initializeApp(firebaseConfig)), 'questions');
+//   const questionsSnapshot = await getDocs(questionsCollection);
+//   console.log(questionsSnapshot.docs[0])
+//   const questionsList = questionsSnapshot.docs.map(doc => doc.data());
+//   return questionsList;
+// }
+// console.log(questions(db))
+
+let arrayX: DocumentData[] = [];
+const questionsReference = collection(db, 'questions');
+getDocs(questionsReference)
+  .then((res) => {
+    arrayX.push(res.docs[0].data())
+  })
+console.log(arrayX);
 
 module.exports = app;
