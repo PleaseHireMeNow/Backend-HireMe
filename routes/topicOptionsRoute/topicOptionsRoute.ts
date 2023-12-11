@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-import stackOptions from '../../testing/db/stack-options.json'
+import topicOptions from '../../testing/db/topic-options.json'
 
 router.get('/', (req, res) => {
 
-  res.status(200).send(stackOptions);
+  res.status(200).send(topicOptions);
 
 })
 

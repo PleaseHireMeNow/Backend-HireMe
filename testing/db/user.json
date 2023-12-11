@@ -2,7 +2,7 @@
   {
     "user_id": "string1",
     "username": "string",
-    "stack_selection": [
+    "topic_selection": [
       {
         "difficulty": {
           "name": "entry_level",
@@ -58,7 +58,7 @@
   {
     "user_id": "string2",
     "username": "string",
-    "stack_selection": [
+    "topic_selection": [
       {
         "difficulty": {
           "name": "entry_level",
