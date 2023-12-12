@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import selection from "../../testing/db/stack-selection.json";
+import selection from "../../testing/db/user.json";
 
 
 const app = require("../../server");
@@ -9,13 +9,13 @@ const usersInDatabase = require("../../testing/db/user.json");
 const correctUserid = usersInDatabase[0].userId;
 const incorrectUserid = "lkh34590dsa8fl4i3k5j";
 
-describe("stackSelection route test", () => {
+describe("topic-selection route test", () => {
 
   // GET TESTS
-  test("stackSelection GET route success test, should return array of strings & status 200", done => {
+  test("topic-selection GET route success test, should return array of strings & status 200", done => {
     // start dummy server
     request(app)
-      .get(`/api/stackSelection/${correctUserid}`)
+      .get(`/api/topic-selection/${correctUserid}`)
       .end((err: Object, res: Response) => {
         
         if (err) {
@@ -30,9 +30,9 @@ describe("stackSelection route test", () => {
       });
   }, 1000);
 
-  test("stackSelection GET route incorrect userid, should send 403", done => {
+  test("topic-selection GET route incorrect userid, should send 403", done => {
     request(app)
-      .get(`/api/stackSelection/${incorrectUserid}`)
+      .get(`/api/topic-selection/${incorrectUserid}`)
       .expect(403)
       .end((err: Object, res: Response) => {
         if (err) {
@@ -46,10 +46,10 @@ describe("stackSelection route test", () => {
 
 
 // POST TESTS
-test("stackSelection POST route success test, should send status 200", done => {
+test("topic-selection POST route success test, should send status 200", done => {
   // start dummy server
   request(app)
-    .post(`/api/stackSelection/${correctUserid}`)
+    .post(`/api/topic-selection/${correctUserid}`)
     .end((err: Object, res: Response) => {
       if (err) {
         console.error(err);
@@ -59,9 +59,9 @@ test("stackSelection POST route success test, should send status 200", done => {
     });
 }, 1000);
 
-test("stackSelection POST route incorrect userid, should send 403", done => {
+test("topic-selection POST route incorrect userid, should send 403", done => {
   request(app)
-    .post(`/api/stackSelection/${incorrectUserid}`)
+    .post(`/api/topic-selection/${incorrectUserid}`)
     .expect(403)
     .end((err: Object, res: Response) => {
       if (err) {
@@ -74,10 +74,10 @@ test("stackSelection POST route incorrect userid, should send 403", done => {
 }, 1000);
 
 // PUT TESTS
-test("stackSelection PUT route success test, should send status 200", done => {
+test("topic-selection PUT route success test, should send status 200", done => {
   // start dummy server
   request(app)
-    .put(`/api/stackSelection/${correctUserid}`)
+    .put(`/api/topic-selection/${correctUserid}`)
     .end((err: Object, res: Response) => {
       if (err) {
         console.error(err);
@@ -87,9 +87,9 @@ test("stackSelection PUT route success test, should send status 200", done => {
     });
 }, 1000);
 
-test("stackSelection PUT route incorrect userid, should send 403", done => {
+test("topic-selection PUT route incorrect userid, should send 403", done => {
   request(app)
-    .put(`/api/stackSelection/${incorrectUserid}`)
+    .put(`/api/topic-selection/${incorrectUserid}`)
     .expect(403)
     .end((err: Object, res: Response) => {
       if (err) {
@@ -103,10 +103,10 @@ test("stackSelection PUT route incorrect userid, should send 403", done => {
 
 
 // DELETE TESTS
-test.only("stackSelection DELETE route success test, should send status 200", done => {
+test.only("topic-selection DELETE route success test, should send status 200", done => {
   // start dummy server
   request(app)
-    .delete(`/api/stackSelection/${correctUserid}`)
+    .delete(`/api/topic-selection/${correctUserid}`)
     .end((err: Object, res: Response) => {
       if (err) {
         console.error(err);
@@ -116,9 +116,9 @@ test.only("stackSelection DELETE route success test, should send status 200", do
     });
 }, 1000);
 
-test.only("stackSelection DELETE route incorrect userid, should send 403", done => {
+test.only("topic-selection DELETE route incorrect userid, should send 403", done => {
   request(app)
-    .delete(`/api/stackSelection/${incorrectUserid}`)
+    .delete(`/api/topic-selection/${incorrectUserid}`)
     .expect(403)
     .end((err: Object, res: Response) => {
       if (err) {

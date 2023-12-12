@@ -3,8 +3,8 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 // Dummy Data
-import selection from "../../testing/db/stack-selection.json";
-
+import user from "../../testing/db/user.json";
+const selection = user[0].topic_selection
 // * ROUTES
 
 router.get("/:userid", (req, res) => {

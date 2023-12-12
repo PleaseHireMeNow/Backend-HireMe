@@ -1,0 +1,26 @@
+{
+  "difficulty": [
+    {
+      "name": "entry-level",
+      "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    },
+    {
+      "name": "mid-level",
+      "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    },
+    {
+      "name": "senior-level",
+      "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    }
+],
+  "topics": [
+    {
+      "name": "Javascript",
+      "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    },
+    {
+      "name": "React",
+      "icon_path": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    }
+  ]
+}
