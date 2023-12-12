@@ -22,8 +22,12 @@ export interface QuestionContent {
 export interface Question {
   // 'question-id': string;
   'question-content': QuestionContent;
+  rating: number;
 }
 
 export interface CompletedQuestion extends Question {
   responses: Response[];
 }
+
+
+export type Questions = Question[];

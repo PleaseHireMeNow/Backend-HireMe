@@ -2,16 +2,13 @@
 
 import { doc, setDoc } from 'firebase/firestore';
 import { questionsCol } from '../database/firestore';
-import { Question } from '../types/models/Questions';
+import { Questions, Question } from '../types/models/Questions';
 
-type Questions = Question[];
 
 //this function will evole into the function that interfaces with data directly from GPT
 
 export const importQuestionData = async () => {
     console.log('importing sample data !!!!');       
-
-
     for (let questionf of questionArray) {
         const questionRef = doc(questionsCol)
         await setDoc(questionRef, questionf)
@@ -19,7 +16,7 @@ export const importQuestionData = async () => {
 }
 
 
-const questionArray: Questions = [
+const questionArray: Question[] = [
   {
     "question-content": {
       "text": "What is React?",

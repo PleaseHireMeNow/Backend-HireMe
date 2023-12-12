@@ -38,11 +38,19 @@ import { initializeApp } from 'firebase/app'
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
-connectFirestoreEmulator(db, '127.0.0.1', 8080);
+// connectFirestoreEmulator(db, '127.0.0.1', 8080);
 
 
 const createCollection = <T = DocumentData>(collectionName: string) => {
-  return collection(db, collectionName) as CollectionReference<T>
+    return collection(db, collectionName) as CollectionReference<T>
 }
+// const createDocument = <T = DocumentData>(documentName: string) => {
+//     return document( 
+//
+// }
+//
+
 
 export const questionsCol = createCollection<Question>('questions');
+
+// export const questionDoc = 

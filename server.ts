@@ -8,7 +8,7 @@ import questionsRouter from './routes/questionsRoute/questionsRoute'
 // const stackRouter = require('./routes/stackRoute/stackRoute')
 // const stackSelectionRouter = require('./routes/stackSelectionRoute/stackSelection')
 // const userRouter = require('./routes/userRoute/userRoute')
-
+import {getEntryQuestion} from './modules/addQuestionToUser'
 // dotenv.config();
 
 const app = express();
@@ -27,6 +27,6 @@ app.listen(PORT, () => {
 });
 
 // importQuestionData();
-
+getEntryQuestion();
 
 module.exports = app;
