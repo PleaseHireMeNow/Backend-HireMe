@@ -13,7 +13,9 @@ export const getNestedDocument = async (
     const collectionSnapshot = await getDocs(questionCollectionRef);
     let questionCollection: Question[] = []
     collectionSnapshot.forEach((doc) => {
+      console.log(doc.id);
       const questionData = doc.data() as Question;
+      questionData.question_id = doc.id;
       questionCollection.push(questionData);
     })
     return questionCollection

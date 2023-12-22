@@ -3,8 +3,8 @@ export interface AnswerContent {
 }
 
 export interface Answer {
-  'answer-content': AnswerContent;
-  'is-correct': boolean;
+  'answer_content': AnswerContent;
+  'is_correct': boolean;
 }
 
 export interface Response {
@@ -20,8 +20,8 @@ export interface QuestionContent {
 }
 
 export interface Question {
-  // 'question-id': string;
-  'question-content': QuestionContent;
+  'question_id': string;
+  'question_content': QuestionContent;
   rating: number;
 }
 
