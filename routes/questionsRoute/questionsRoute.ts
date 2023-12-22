@@ -3,7 +3,7 @@ import questions from '../../testing/db/question.json'
 const router = express.Router();  
 import { FieldValue } from 'firebase/firestore';
 import {db} from '../../modules/db'
-import {getNestedDocument} from '../../modules/questions'
+import {getNestedDocument} from './questions'
 import { getDocs, getDoc, setDoc, doc } from '@firebase/firestore'
 import { Questions } from '../../types/models/Questions';
 

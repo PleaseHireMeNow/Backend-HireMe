@@ -1,6 +1,6 @@
-import { Question } from '../types/models/Questions'
+import { Question } from '../../types/models/Questions'
 import { collection, doc, getDocs } from "firebase/firestore";
-import { db } from './db'
+import { db } from '../../modules/db'
 
 export const getNestedDocument = async (
   collectionName: string,
