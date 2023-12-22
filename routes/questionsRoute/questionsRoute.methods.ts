@@ -56,7 +56,7 @@ const setQuestionDoc = async (
 // * Get questions flow
 // get questions from DB
 // compare to user - see what has been looked at
-// if not enough questions - get more Q's from GPT
-  // <20 -- get Q's from GPT
-// return bundle of questions (to DB)
-// GET to Frontend set of Q's
+// send 10 questions to the user 
+// update users list of questions in DB
+// if not enough questions (less than 20) - get more Q's from GPT
+  // SET new Q's in questions DB

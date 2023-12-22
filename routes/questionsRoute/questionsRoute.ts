@@ -5,6 +5,13 @@ const router = express.Router();
 import { getNestedDocument } from "./questionsRoute.methods";
 
 router.get("/:userid", async (req, res) => {
+  // check if user id exists
+  // get user id info from DB
+    // topic, difficulty
+    // previously answered questions 
+  // call questions from DB
+  // compare (check route methods)
+
   if (
     //query the database to check if the user id is valid
     req.params.userid !== "string1"
