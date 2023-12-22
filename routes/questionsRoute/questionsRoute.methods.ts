@@ -1,7 +1,7 @@
 import { Question } from "../../types/models/Questions";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../modules/db";
-import questions from "../../testing/db/question.json";
+
 
 export const getNestedDocument = async (
   collectionName: string,
@@ -9,9 +9,9 @@ export const getNestedDocument = async (
   difficulty: string
 ) => {
   try {
-    // testing set data to DB!!
-
-    setQuestionDoc("questions", "JavaScript", "entry-level", questions);
+    // * testing set questions to DB!!
+    // ! disabled so it doesn't send 20 Q's to DB!
+    // setQuestionDoc("questions", "JavaScript", "entry-level", questions);
 
     const questionCollectionRef = collection(
       doc(collection(db, collectionName), topic),
