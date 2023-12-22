@@ -10,3 +10,10 @@ package-lock.json
 dist
 
 firebase.config.js
+.firebaserc
+firebase.json
+.firebase
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+database-debug.log*
