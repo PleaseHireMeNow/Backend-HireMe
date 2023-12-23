@@ -1,7 +1,5 @@
 [
   {
-    "question_id": "",
-    "rating": 0,
     "question_content": {
       "text": "string",
       "answers": [

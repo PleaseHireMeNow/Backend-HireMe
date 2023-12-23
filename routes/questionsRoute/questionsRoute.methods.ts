@@ -1,7 +1,7 @@
 import { Question } from "../../types/models/Questions";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../modules/db";
-
+import { gptSendPrompt } from "../../modules/openai";
 
 export const getNestedDocument = async (
   collectionName: string,
@@ -27,7 +27,10 @@ export const getNestedDocument = async (
       questionCollection.push(questionData);
     });
 
-    return questionCollection;
+    const result = await gptSendPrompt("React", "entry-level", [], 2);
+
+    return result.choices[0].message.content;
+    // return questionCollection;
   } catch (error) {
     console.error("Error getting collection:", error);
     throw error; // Propagate the error
@@ -48,27 +51,23 @@ const setQuestionDoc = async (
       );
     } catch (error) {
       console.error("Error happened in setQuestionDoc", error);
-    } 
+    }
   });
 };
-
 
 // * Get questions flow
 // get questions from DB
 // compare to user - see what has been looked at
-// send 10 questions to the user 
+// send 10 questions to the user
 // update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT
-  // SET new Q's in questions DB
-
-
-
+// SET new Q's in questions DB
 
 // * AI needs
 // Get a list of questions (tech stack & level)
 
 // Give to prompt
 // from DB
-  // Topic
-  // Difficulty
-  // List of questions in DB
+// Topic
+// Difficulty
+// List of questions in DB

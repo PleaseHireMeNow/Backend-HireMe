@@ -16,7 +16,7 @@ export const gptSendPrompt = async (topic, difficulty, priorQuestionsList, respo
   // this is the call to Open AI
   const response = await openai.chat.completions.create({
     model: "gpt-4-1106-preview",
-    // response_format: { type: "json_object" },
+    response_format: { type: "json_object" },
     messages: gptMessage,
     temperature: 0,
   });
@@ -53,7 +53,15 @@ const gptMessageConfig = (topic, difficulty, priorQuestionsList, responseQuantit
 
       Formatting
       Questions should be returned as an array of question objects in a JSON format.
-      The JSON looks like: ${questionFormat}
+      The question object contains a "question_content" property.
+      Inside "question_content" object should have properties of "text" and "answers".
+      The "text" property should be a string that includes the question. 
+      The "answers" property should be an array of objects.
+      Each object in the "answers" array should have "answer_content" & "is_correct" properties.
+      The "is_correct" property should be a boolean that indicates if the answer is true or false.
+      The "answer_content" property is an object with a "text" property that contains the answer text in string form. 
+
+      The JSON should look like this: ${questionFormat}
 
       Tech Stack: ${topic}
       Target Audience: ${difficulty}
