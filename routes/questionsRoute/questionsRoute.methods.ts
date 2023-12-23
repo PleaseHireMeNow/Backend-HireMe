@@ -60,3 +60,15 @@ const setQuestionDoc = async (
 // update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT
   // SET new Q's in questions DB
+
+
+
+
+// * AI needs
+// Get a list of questions (tech stack & level)
+
+// Give to prompt
+// from DB
+  // Topic
+  // Difficulty
+  // List of questions in DB
