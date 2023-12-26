@@ -1,7 +1,8 @@
 import { Question } from "../../types/models/Questions";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../modules/db";
 import { gptSendPrompt } from "../../modules/openai";
+import { User } from '../../types/models/Questions'
 
 export const getNestedDocument = async (
   collectionName: string,
@@ -54,6 +55,21 @@ const setQuestionDoc = async (
     }
   });
 };
+
+export const getUsersInfo = async () => {
+  const usersInfoRef = collection(db, 'users');
+  let userList: User[] = [];
+  try {
+  const usersSnapshot = await getDocs(usersInfoRef);
+
+    usersSnapshot.forEach(doc => {
+      const userData = doc.data() as User;
+      userList.push(userData)
+    })
+    return userList;
+  } finally { 
+  }
+}
 
 // * Get questions flow
 // get questions from DB
