@@ -33,8 +33,14 @@ export interface User {
   username: string,
   topic_selection: [
     {
-      topic: string,
-      difficulty: string
+      topic: {
+        name: string,
+        iconPath: string
+      },
+      difficulty: {
+        name: string,
+        iconPath: string
+      }
     }
   ],
   is_guest: boolean,
