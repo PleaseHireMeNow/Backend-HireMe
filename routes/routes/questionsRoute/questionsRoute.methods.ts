@@ -1,8 +1,9 @@
-import { Question } from "../../../types/models/Questions";
+import { AnswerHistory, Question } from "../../../types/models/Questions";
 import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../../modules/db";
 import { gptSendPrompt } from "../../../modules/openai";
-import { User } from '../../../types/models/Questions'
+import { User } from "../../../types/models/Questions";
+import questions from "../../../testing/db/question.json";
 
 export const getNestedDocument = async (
   collectionName: string,
@@ -21,13 +22,15 @@ export const getNestedDocument = async (
 
     const collectionSnapshot = await getDocs(questionCollectionRef);
     let questionCollection: Question[] = [];
+    
     collectionSnapshot.forEach(doc => {
-      console.log(doc.id);
       const questionData = doc.data() as Question;
-      questionData.question_id = doc.id;
       questionCollection.push(questionData);
     });
 
+    // * testing GPT get question data!
+    // ! disabled to not constantly ping GPT
+    // ! SETUP YOUR OWN GPT ACCOUNT AND ADD YOUR KEY TO .env AS: "OPENAI_API_KEY"
     // const result = await gptSendPrompt("React", "mid-level", [], 3);
 
     // return result.choices[0].message.content;
@@ -46,10 +49,14 @@ const setQuestionDoc = async (
 ) => {
   questionArray.forEach(async question => {
     try {
-      await setDoc(
-        doc(collection(doc(collection(db, collectionName), topic), difficulty)),
-        question
+      const dataRef = doc(
+        collection(doc(collection(db, collectionName), topic), difficulty)
       );
+      const id = dataRef.id;
+
+      question.question_id = id;
+
+      await setDoc(dataRef, question);
     } catch (error) {
       console.error("Error happened in setQuestionDoc", error);
     }
@@ -57,42 +64,67 @@ const setQuestionDoc = async (
 };
 
 export const getUsersInfo = async () => {
-  const usersInfoRef = collection(db, 'users');
+  const usersInfoRef = collection(db, "users");
   let userList: User[] = [];
   try {
-  const usersSnapshot = await getDocs(usersInfoRef);
+    const usersSnapshot = await getDocs(usersInfoRef);
 
     usersSnapshot.forEach(doc => {
       const userData = doc.data() as User;
-      userList.push(userData)
-    })
+      userList.push(userData);
+    });
     return userList;
-  } finally { 
+  } finally {
   }
-}
+};
 
+const getQuestionHistory = async (matchingUser: User) => {
+  console.log(matchingUser);
 
+  const userHistoryRef = collection(
+    doc(collection(db, "users"), "HzseqOG9O5zX5nsznsVz"),
+    "history"
+  );
 
-export const compareQuestionLists = (allQuestions: Question[], userid: string) => {
+  const historySnapshot = await getDocs(userHistoryRef);
 
-  console.log(userid);
-  
-    // const userQuestionHistory = matchingUser.history
+  let answeredQuestionIds: string[] = [];
 
-    // allQuestions.forEach((question) => {
-    //   userQuestionHistory.some((historyQuestion) => {
-    //     question.question_id === historyQuestion.
+  historySnapshot.forEach(answeredQuestion => {
+    const data = answeredQuestion.data() as AnswerHistory;
+    console.log("questionId is: ", answeredQuestion.id);
+    console.log(data);
+  });
 
-    //   })
-}
+  // console.log(userHistoryRef);
+  // console.log(historySnapshot);
+
+  // return userQuestionHistory;
+};
+
+export const compareQuestionLists = (
+  allQuestions: Question[],
+  matchingUser: User
+) => {
+  // console.log(userid);
+  getQuestionHistory(matchingUser);
+
+  // const userQuestionHistory = matchingUser.history
+
+  // allQuestions.forEach((question) => {
+  //   userQuestionHistory.some((historyQuestion) => {
+  //     question.question_id === historyQuestion.
+
+  //   })
+};
 
 // * Get questions flow
 // ✅ get questions from DB
 // get userHistory from DB
-// compare to user - see what has been looked at 
-  // -- grab all incorrectly answered & unanswered questions
+// compare to user - see what has been looked at
+// -- grab all incorrectly answered & unanswered questions
 // send 10 questions to the user
-  // ADD to current session
+// ADD to current session
 // update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT
 // SET new Q's in questions DB
@@ -106,7 +138,6 @@ export const compareQuestionLists = (allQuestions: Question[], userid: string) =
 // Difficulty
 // List of questions in DB
 
-
 // * update answers
-  // update user answer history 
-  // update current session is_answered property
+// update user answer history
+// update current session is_answered property

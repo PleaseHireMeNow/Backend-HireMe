@@ -29,7 +29,7 @@ router.get("/:userid", async (req, res) => {
     // pseudo code for looking up the user's topic(s) and difficulty(ies)
     let topic = matchingUser.topic_selection[0].topic.name;
     let difficulty = matchingUser.topic_selection[0].difficulty.name;
-    //
+    
     const allQuestions = await getNestedDocument("questions", topic, difficulty);
     // const userQuestionHistory = matchingUser.history
 
@@ -39,7 +39,7 @@ router.get("/:userid", async (req, res) => {
     //   })
     // })
 
-    compareQuestionLists(allQuestions, userid)
+    // compareQuestionLists(allQuestions, matchingUser)
 
 
 
