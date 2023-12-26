@@ -27,10 +27,10 @@ export const getNestedDocument = async (
       questionCollection.push(questionData);
     });
 
-    const result = await gptSendPrompt("React", "entry-level", [], 2);
+    // const result = await gptSendPrompt("React", "mid-level", [], 3);
 
-    return result.choices[0].message.content;
-    // return questionCollection;
+    // return result.choices[0].message.content;
+    return questionCollection;
   } catch (error) {
     console.error("Error getting collection:", error);
     throw error; // Propagate the error
