@@ -46,6 +46,7 @@ export interface CompletedQuestion extends Question {
 }
 
 export interface User {
+  user_id: string,
   username: string,
   topic_selection: [
     {

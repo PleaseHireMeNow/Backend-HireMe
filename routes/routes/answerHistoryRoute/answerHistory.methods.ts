@@ -12,6 +12,7 @@ export const postAnswerHistory = async (
     const userHistory = await getDoc(userHistoryRef);
     if (userHistory.data() === undefined) {
       let userHistoryData = {
+        question_id: question.question_id,
         question_content: question.question_content,
         answered_correctly: 0,
         answered_incorrectly: 0,
