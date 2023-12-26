@@ -2,13 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv'
 const bodyParser = require('body-parser');
 const cors = require('cors') 
-import questionsRouter from './routes/questionsRoute/questionsRoute'
-import answerHistoryRouter from './routes/answerHistoryRoute/answerHistory'
-import loginRouter from './routes/loginRoute/loginRoute'
-import registerRouter from './routes/registerRoute/registerRoute'
-import topicOptionsRouter from './routes/topicOptionsRoute/topicOptionsRoute'
-import topicSelectionRouter from './routes/topicSelectionRoute/topicSelection'
-import userRouter from './routes/userRoute/userRoute'
+import questionsRouter from './routes/routes/questionsRoute/questionsRoute'
+import answerHistoryRouter from './routes/routes/answerHistoryRoute/answerHistory'
+import loginRouter from './routes/routes/loginRoute/loginRoute'
+import registerRouter from './routes/routes/registerRoute/registerRoute'
+import topicOptionsRouter from './routes/routes/topicOptionsRoute/topicOptionsRoute'
+import topicSelectionRouter from './routes/routes/topicSelectionRoute/topicSelection'
+import userRouter from './routes/routes/userRoute/userRoute'
 dotenv.config();
 
 const app = express();

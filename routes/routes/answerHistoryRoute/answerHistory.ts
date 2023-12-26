@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 const router = express.Router();
-import question from '../../testing/db/question.json'
+import question from '../../../testing/db/question.json'
 import { postAnswerHistory } from './answerHistory.methods';
 
 router.get('/:userid', (req: Request, res: Response) => {

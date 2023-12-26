@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 const app = require('../../server')
 const request = require('supertest')
-import topicOptions from '../../testing/db/topic-options.json'
+import topicOptions from '../../../testing/db/topic-options.json'
 
 describe("topic options route", () => {
   it.only("should get the topic options", (done) => {

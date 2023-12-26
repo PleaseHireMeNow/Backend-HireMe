@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import userJson from '../../testing/db/user.json'
+import userJson from '../../../testing/db/user.json'
 const router = express.Router();
 
 

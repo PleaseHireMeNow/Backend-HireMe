@@ -1,8 +1,8 @@
-import { Question } from "../../types/models/Questions";
+import { Question } from "../../../types/models/Questions";
 import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../modules/db";
-import { gptSendPrompt } from "../../modules/openai";
-import { User } from '../../types/models/Questions'
+import { db } from "../../../modules/db";
+import { gptSendPrompt } from "../../../modules/openai";
+import { User } from '../../../types/models/Questions'
 
 export const getNestedDocument = async (
   collectionName: string,
@@ -72,8 +72,10 @@ export const getUsersInfo = async () => {
 }
 
 // * Get questions flow
-// get questions from DB
-// compare to user - see what has been looked at
+// ✅ get questions from DB
+// get userHistory from DB
+// compare to user - see what has been looked at 
+  // -- grab all incorrectly answered & unanswered questions
 // send 10 questions to the user
 // update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT

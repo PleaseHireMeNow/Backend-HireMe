@@ -1,8 +1,6 @@
-import { Answer, AnswerHistory, Question, QuestionContent } from "../../types/models/Questions";
-import { collection, doc, getDocs, getDoc, setDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../modules/db";
-import { gptSendPrompt } from "../../modules/openai";
-import { User } from '../../types/models/Questions'
+import { Answer, AnswerHistory, Question } from "../../../types/models/Questions";
+import { collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../../modules/db";
 
 export const postAnswerHistory = async (
   userid: string,

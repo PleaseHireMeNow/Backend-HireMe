@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 // Dummy Data
-import user from "../../testing/db/user.json";
+import user from "../../../testing/db/user.json";
 const selection = user[0].topic_selection
 // * ROUTES
 

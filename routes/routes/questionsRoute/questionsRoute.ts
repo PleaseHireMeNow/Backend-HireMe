@@ -1,6 +1,6 @@
 import express from "express";
-import questions from "../../testing/db/question.json";
-import { User } from "../../types/models/Questions";
+import questions from "../../../testing/db/question.json";
+import { User } from "../../../types/models/Questions";
 import { getUsersInfo } from "./questionsRoute.methods";
 const router = express.Router();
 
@@ -27,8 +27,8 @@ router.get("/:userid", async (req, res) => {
     let topic = matchingUser.topic_selection[0].topic.name;
     let difficulty = matchingUser.topic_selection[0].difficulty.name;
     //
-    const questions = await getNestedDocument("questions", topic, difficulty);
-    res.send(questions).status(200);
+    const allQuestions = await getNestedDocument("questions", topic, difficulty);
+    res.send(allQuestions).status(200);
   }
 });
 
