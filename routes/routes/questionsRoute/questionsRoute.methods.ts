@@ -71,12 +71,28 @@ export const getUsersInfo = async () => {
   }
 }
 
+
+
+export const compareQuestionLists = (allQuestions: Question[], userid: string) => {
+
+  console.log(userid);
+  
+    // const userQuestionHistory = matchingUser.history
+
+    // allQuestions.forEach((question) => {
+    //   userQuestionHistory.some((historyQuestion) => {
+    //     question.question_id === historyQuestion.
+
+    //   })
+}
+
 // * Get questions flow
 // ✅ get questions from DB
 // get userHistory from DB
 // compare to user - see what has been looked at 
   // -- grab all incorrectly answered & unanswered questions
 // send 10 questions to the user
+  // ADD to current session
 // update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT
 // SET new Q's in questions DB
@@ -89,3 +105,8 @@ export const getUsersInfo = async () => {
 // Topic
 // Difficulty
 // List of questions in DB
+
+
+// * update answers
+  // update user answer history 
+  // update current session is_answered property

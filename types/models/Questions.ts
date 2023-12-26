@@ -60,16 +60,7 @@ export interface User {
     }
   ],
   is_guest: boolean,
-  history: QuestionContent[],
-  userAnswer: [
-    {
-      question_id: string,
-      question_content: QuestionContent,
-      response_content: Response,
-      is_correct: boolean
-    }
-  ]
-
+  history: AnswerHistory[],
 }
 
 
