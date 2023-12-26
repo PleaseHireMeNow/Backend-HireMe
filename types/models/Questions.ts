@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface AnswerContent {
   text: string;
 }
@@ -5,6 +7,20 @@ export interface AnswerContent {
 export interface Answer {
   'answer_content': AnswerContent;
   'is_correct': boolean;
+}
+
+export interface AnswerHistory {
+  'question_content': QuestionContent;
+  'answered_correctly': number;
+  'answered_incorrectly': number;
+  'responses': [
+    {
+      timestamp: Timestamp,
+      response: {
+        "answer": Answer
+      }
+    }
+  ]
 }
 
 export interface Response {
