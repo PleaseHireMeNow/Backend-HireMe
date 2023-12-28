@@ -55,21 +55,24 @@ const addAnswerToCurrentSession = async (
 ) => {
   // add answer to current session
   // create reference for current session
-  const currentSessionRef = collection(doc(collection(db, 'users'), userId), 'current_session');
-  const currentSessionCollectionSnapshot = await getDocs(currentSessionRef)
-  const currentSessionDocumentRef = doc(currentSessionRef, currentSessionCollectionSnapshot.docs[0].id)
   const currentSessionDocumentSnapshot = await getCurrentSessionDocumentSnapshot(userId)
   const currentSessionDocument = currentSessionDocumentSnapshot.data() as Session
   // update questioncontent in current session
+  const currentSessionDocumentRef = await getCurrentSessionDocumentRef(userId)
   await setDoc(currentSessionDocumentRef, { current_question: currentSessionDocument.current_question + 1 }, { merge: true });
   answer.is_correct && await setDoc(currentSessionDocumentRef, { answered_correctly: currentSessionDocument.answered_correctly || 1 }, { merge: true });
   console.log(currentSessionDocument.current_question)
 }
 
 export const getCurrentSessionDocumentSnapshot = async (userId: string) => {
-  const currentSessionRef = collection(doc(collection(db, 'users'), userId), 'current_session');
-  const currentSessionCollectionSnapshot = await getDocs(currentSessionRef)
-  const currentSessionDocumentRef = doc(currentSessionRef, currentSessionCollectionSnapshot.docs[0].id)
+  const currentSessionDocumentRef = await getCurrentSessionDocumentRef(userId)
   const currentSessionDocumentSnapshot = await getDoc(currentSessionDocumentRef)
   return currentSessionDocumentSnapshot;
+}
+
+const getCurrentSessionDocumentRef = async (userId: string) => {
+  const currentSessionRef = collection(doc(collection(db, 'users'), userId), 'current_session');
+  const currentSessionCollectionSnapshot = await getDocs(currentSessionRef)
+  return doc(currentSessionRef, currentSessionCollectionSnapshot.docs[0].id)
+
 }
