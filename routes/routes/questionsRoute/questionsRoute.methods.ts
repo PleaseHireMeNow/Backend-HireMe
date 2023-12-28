@@ -1,5 +1,4 @@
 import {
-  Answer,
   AnswerHistory,
   NewSessionResponse,
   Question,
@@ -8,67 +7,13 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
-  setDoc,
   addDoc,
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { gptSendPrompt } from "../../../modules/openai";
 import { User } from "../../../types/models/Questions";
-import questions from "../../../testing/db/question.json";
-
-export const getQuestionDocuments = async (
-  topic: string,
-  difficulty: string
-) => {
-  try {
-    // * testing set questions to DB!!
-    // ! disabled so it doesn't send 20 Q's to DB!
-    // setQuestionDoc("questions", "JavaScript", "entry-level", questions);
-
-    const questionCollectionRef = collection(
-      doc(collection(db, 'questions'), topic),
-      difficulty
-    );
-
-    const collectionSnapshot = await getDocs(questionCollectionRef);
-    let questionCollection: Question[] = [];
-
-    collectionSnapshot.forEach(doc => {
-      const questionData = doc.data() as Question;
-      questionCollection.push(questionData);
-    });
-
-    // return result.choices[0].message.content;
-    return questionCollection;
-  } catch (error) {
-    console.error("Error getting collection:", error);
-    throw error; // Propagate the error
-  }
-};
-
-// * Send new questions to DB
-export const setQuestionDoc = async (
-  topic: string,
-  difficulty: string,
-  questionArray: Question[]
-) => {
-  questionArray.forEach(async question => {
-    try {
-      const dataRef = doc(
-        collection(doc(collection(db, 'questions'), topic), difficulty)
-      );
-
-      question.question_id = dataRef.id;
-
-      await setDoc(dataRef, question);
-    } catch (error) {
-      console.error("Error happened in setQuestionDoc", error);
-    }
-  });
-};
+import { getQuestionDocuments } from "../../utils/questionDocs.utils";
 
 export const getUsersInfo = async () => {
   const usersInfoRef = collection(db, "users");
@@ -111,35 +56,49 @@ export const compareQuestionLists = async (
   numberOfQuestions: number
 ) => {
   // get number of questions from the db
-  const allQuestions = await getQuestionDocuments(
-    topic,
-    difficulty
-  );
+  const allQuestions = await getQuestionDocuments(topic, difficulty);
 
   // gets questionHistory from user DB
   const userAnsweredQuestions = await getQuestionHistory(userId);
+
+  console.log("allQuestions length is:", allQuestions.length);
+  console.log("userAnsweredQuestions length is:", userAnsweredQuestions.length);
 
   let questionList: Question[] = [];
 
   // compare questions and find 10 new questions from list of allQuestions
   allQuestions.forEach(question => {
-    userAnsweredQuestions.some(historyQuestion => {
-      question.question_id !== historyQuestion.question_id ||
-        historyQuestion.answered_incorrectly >
+    if (
+      userAnsweredQuestions.some(historyQuestion => {
+        // console.log("historyQuestion is: ", historyQuestion);
+        const matchingQiestionId =
+          question.question_id !== historyQuestion.question_id;
+        const moreWrong =
+          historyQuestion.answered_incorrectly >=
           historyQuestion.answered_correctly;
-    }) && questionList.push(question);
+
+        console.log(matchingQiestionId, moreWrong);
+
+        return (matchingQiestionId || moreWrong)
+        
+      })
+    ) {
+      console.log("it works!");
+      questionList.push(question);
+    }
   });
+
+  // console.log('questionList is: ', questionList);
+  console.log("questionList length is: ", questionList.length);
 
   // set list of ~10~ question
   const sessionQuestionList = questionList.slice(0, numberOfQuestions);
 
   // check if we need more questions
-  const needMoreQuestionsFlag = (questionList.length < 20) 
+  const needMoreQuestionsFlag = questionList.length < 20;
 
   return { sessionQuestionList, needMoreQuestionsFlag, current_question: 0 };
 };
-
-
 
 export const createNewSession = async (
   numberOfQuestions: number,

@@ -19,9 +19,10 @@ router.get('/:userid', (req: Request, res: Response) => {
 router.post('/:userid', (req: Request, res: Response) => {
   // console.log('req.params is:', req.params);
   const answer = req.body.answer;
-  
+  const userId = 'HzseqOG9O5zX5nsznsVz'
+
   postAnswerHistory(
-    'HzseqOG9O5zX5nsznsVz',
+    userId,
     {
       answer_content: {
         text: "A JavaScript library for building user interfaces."
