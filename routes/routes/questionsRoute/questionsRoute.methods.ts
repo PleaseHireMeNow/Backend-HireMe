@@ -20,7 +20,6 @@ import { User } from "../../../types/models/Questions";
 import questions from "../../../testing/db/question.json";
 
 export const getQuestionDocuments = async (
-  collectionName: string,
   topic: string,
   difficulty: string
 ) => {
@@ -30,7 +29,7 @@ export const getQuestionDocuments = async (
     // setQuestionDoc("questions", "JavaScript", "entry-level", questions);
 
     const questionCollectionRef = collection(
-      doc(collection(db, collectionName), topic),
+      doc(collection(db, 'questions'), topic),
       difficulty
     );
 
@@ -42,11 +41,6 @@ export const getQuestionDocuments = async (
       questionCollection.push(questionData);
     });
 
-    // * testing GPT get question data!
-    // ! disabled to not constantly ping GPT
-    // ! SETUP YOUR OWN GPT ACCOUNT AND ADD YOUR KEY TO .env AS: "OPENAI_API_KEY"
-    // const result = await gptSendPrompt("React", "mid-level", [], 3);
-
     // return result.choices[0].message.content;
     return questionCollection;
   } catch (error) {
@@ -56,8 +50,7 @@ export const getQuestionDocuments = async (
 };
 
 // * Send new questions to DB
-const setQuestionDoc = async (
-  collectionName: string,
+export const setQuestionDoc = async (
   topic: string,
   difficulty: string,
   questionArray: Question[]
@@ -65,7 +58,7 @@ const setQuestionDoc = async (
   questionArray.forEach(async question => {
     try {
       const dataRef = doc(
-        collection(doc(collection(db, collectionName), topic), difficulty)
+        collection(doc(collection(db, 'questions'), topic), difficulty)
       );
 
       question.question_id = dataRef.id;
@@ -119,7 +112,6 @@ export const compareQuestionLists = async (
 ) => {
   // get number of questions from the db
   const allQuestions = await getQuestionDocuments(
-    "questions",
     topic,
     difficulty
   );
@@ -215,17 +207,17 @@ export const getExistingSession = async (userId: string) => {
 // ✅ ADD to current session
 // ✅ update users list of questions in DB
 // ✅ send need more questions flag to frontend
-// if not enough questions (less than 20) - get more Q's from GPT
-// SET new Q's in questions DB
+// ✅ if not enough questions (less than 20) - get more Q's from GPT
+// ✅ SET new Q's in questions DB
 
 // * AI needs
-// Get a list of questions (tech stack & level)
+// ✅ Get a list of questions (tech stack & level)
 
-// Give to prompt
-// from DB
-// Topic
-// Difficulty
-// List of questions in DB
+// What to give to prompt
+// ✅ Topic
+// ✅ Difficulty
+// ✅ List of questions in DB
+// variable number of questions to generate (deal with later)
 
 // * update answers
 // ✅ update user answer history
