@@ -1,5 +1,5 @@
 import { AnswerHistory, Question } from "../../../types/models/Questions";
-import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, setDoc, addDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../../modules/db";
 import { gptSendPrompt } from "../../../modules/openai";
 import { User } from "../../../types/models/Questions";
@@ -22,7 +22,7 @@ export const getNestedDocument = async (
 
     const collectionSnapshot = await getDocs(questionCollectionRef);
     let questionCollection: Question[] = [];
-    
+
     collectionSnapshot.forEach(doc => {
       const questionData = doc.data() as Question;
       questionCollection.push(questionData);
@@ -52,9 +52,8 @@ const setQuestionDoc = async (
       const dataRef = doc(
         collection(doc(collection(db, collectionName), topic), difficulty)
       );
-      const id = dataRef.id;
 
-      question.question_id = id;
+      question.question_id = dataRef.id;
 
       await setDoc(dataRef, question);
     } catch (error) {
@@ -117,6 +116,39 @@ export const compareQuestionLists = (
 
   //   })
 };
+
+export const createNewSession = async (
+  numberOfQuestions: number,
+  topic: string,
+  difficulty: string,
+  userId: string
+) => {
+  console.log(numberOfQuestions, topic, difficulty, userId)
+  // get number of questions from the db
+  const allQuestions = await getNestedDocument("questions", topic, difficulty);
+  const sessionQuestions = allQuestions.slice(0, numberOfQuestions);
+  // get the existing current session
+  const currentSessionRef = collection(
+    doc(collection(db, 'users'), userId),
+    'current_session'
+  );
+  const currentSessionExisting = await getDocs(currentSessionRef);
+  // save the existing current session to previous sessions
+  const existingSessionsRef = collection(doc(collection(db, 'users'), userId), 'history');
+  // send the questions to the database
+  if (currentSessionExisting.docs.length > 0) {
+    console.log(currentSessionExisting.docs[0].data())
+    await addDoc(existingSessionsRef, currentSessionExisting.docs[0].data())
+    await deleteDoc(doc(currentSessionRef, currentSessionExisting.docs[0].id))
+  }
+  await addDoc(currentSessionRef, {
+    questions: sessionQuestions,
+    timestamp: Timestamp.fromDate(new Date()),
+    current_question: 0
+  })
+  // return the set of questions
+  return sessionQuestions
+}
 
 // * Get questions flow
 // ✅ get questions from DB
