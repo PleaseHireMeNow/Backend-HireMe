@@ -64,5 +64,11 @@ export interface User {
   history: AnswerHistory[],
 }
 
+export interface Session {
+  current_question: number,
+  timestamp: Timestamp,
+  questions: Question[],
+}
+
 
 export type Questions = Question[];
