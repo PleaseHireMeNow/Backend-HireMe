@@ -8,11 +8,20 @@ import questionFormat from "../types/gptJson/question-format.json";
 const openai = new OpenAI();
 
 // creating function to make call to  prompt
-export const gptSendPrompt = async (topic, difficulty, priorQuestionsList, responseQuantity) => {
-  
+export const gptSendPrompt = async (
+  topic: string,
+  difficulty: string,
+  priorQuestionsList: string[],
+  responseQuantity: number
+) => {
   // setup prompt message
-  const gptMessage = gptMessageConfig(topic, difficulty, priorQuestionsList, responseQuantity);
-  
+  const gptMessage = gptMessageConfig(
+    topic,
+    difficulty,
+    priorQuestionsList,
+    responseQuantity
+  );
+
   // this is the call to Open AI
   const response = await openai.chat.completions.create({
     model: "gpt-4-1106-preview",
@@ -25,7 +34,12 @@ export const gptSendPrompt = async (topic, difficulty, priorQuestionsList, respo
 };
 
 // Prompt to send to GPT
-const gptMessageConfig = (topic, difficulty, priorQuestionsList, responseQuantity) => {
+const gptMessageConfig = (
+  topic: string,
+  difficulty: string,
+  priorQuestionsList: string[],
+  responseQuantity: number
+) => {
   return [
     {
       role: "system",
@@ -69,5 +83,5 @@ const gptMessageConfig = (topic, difficulty, priorQuestionsList, responseQuantit
       
       `,
     },
-  ]
+  ];
 };

@@ -66,9 +66,14 @@ export interface User {
 
 export interface Session {
   current_question: number,
+  answered_correctly: number,
   timestamp: Timestamp,
-  questions: Question[],
+  questions: SessionQuestion[],
 }
 
+export interface SessionQuestion {
+  question: Question,
+  answer: Answer
+}
 
 export type Questions = Question[];

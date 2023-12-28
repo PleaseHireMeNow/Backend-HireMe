@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
 import userJson from '../../../testing/db/user.json'
-import { matchingUser } from '../../utils/users.utils';
+import { getMatchingUser } from '../../utils/users.utils';
 const router = express.Router();
 import { getUserDocument } from './userRoute.methods';
 
 
 router.get('/:userid', async (req: Request, res: Response) => {
-const user = await matchingUser(req.params.userid)
+const user = await getMatchingUser(req.params.userid)
 if (user) {
   const userDoc = await getUserDocument(user.user_id)
   res.send(userDoc).status(200)

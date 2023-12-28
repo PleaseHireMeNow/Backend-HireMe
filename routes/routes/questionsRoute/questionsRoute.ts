@@ -2,6 +2,8 @@ import express from "express";
 import questions from "../../../testing/db/question.json";
 import { User } from "../../../types/models/Questions";
 import { getUsersInfo } from "./questionsRoute.methods";
+import { getMatchingUser } from "../../utils/users.utils";
+
 const router = express.Router();
 
 import { createNewSession, getExistingSession } from "./questionsRoute.methods";
@@ -18,26 +20,26 @@ router.get("/:userid/:session", async (req, res) => {
 
   const userList = await getUsersInfo();
 
-  const matchingUser: User = userList.find(user => user.username === userId) as User;
+  const user = await getMatchingUser(userId)
 
   if (
     //query the database to check if the user id is valid
-    matchingUser?.username !== userId
+    user?.username !== userId
   ) {
     res.sendStatus(403);
   } else {
     // pseudo code for looking up the user's topic(s) and difficulty(ies)
-    let topic = matchingUser.topic_selection[0].topic.name;
-    let difficulty = matchingUser.topic_selection[0].difficulty.name;
+    let topic = user.topic_selection[0].topic.name;
+    let difficulty = user.topic_selection[0].difficulty.name;
     
     if (req.params.session === 'new') {
-      const sessionData = await createNewSession(10, topic, difficulty, matchingUser.user_id);
+      const sessionData = await createNewSession(10, topic, difficulty, user.user_id);
       res.send(sessionData).status(200);
     } else if (req.params.session === 'prev') {
-      const sessionData = await getExistingSession(matchingUser.user_id);
+      const sessionData = await getExistingSession(user.user_id);
       res.send(sessionData).status(200);
     }
-    // const userQuestionHistory = matchingUser.history
+    // const userQuestionHistory = user.history
 
     // allQuestions.forEach((question) => {
     //   userQuestionHistory.some((historyQuestion) => {
@@ -45,7 +47,7 @@ router.get("/:userid/:session", async (req, res) => {
     //   })
     // })
 
-    // compareQuestionLists(allQuestions, matchingUser)
+    // compareQuestionLists(allQuestions, user)
 
 
 

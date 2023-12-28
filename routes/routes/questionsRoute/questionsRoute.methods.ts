@@ -5,7 +5,7 @@ import { gptSendPrompt } from "../../../modules/openai";
 import { User } from "../../../types/models/Questions";
 import questions from "../../../testing/db/question.json";
 
-export const getNestedDocument = async (
+export const getQuestionDocuments = async (
   collectionName: string,
   topic: string,
   difficulty: string
@@ -41,6 +41,7 @@ export const getNestedDocument = async (
   }
 };
 
+// * Send new questions to DB
 const setQuestionDoc = async (
   collectionName: string,
   topic: string,
@@ -77,11 +78,10 @@ export const getUsersInfo = async () => {
   }
 };
 
-const getQuestionHistory = async (matchingUser: User) => {
-  console.log(matchingUser);
+const getQuestionHistory = async (user: User) => {
 
   const userHistoryRef = collection(
-    doc(collection(db, "users"), "HzseqOG9O5zX5nsznsVz"),
+    doc(collection(db, "users"), user.user_id),
     "history"
   );
 
@@ -103,12 +103,12 @@ const getQuestionHistory = async (matchingUser: User) => {
 
 export const compareQuestionLists = (
   allQuestions: Question[],
-  matchingUser: User
+  user: User
 ) => {
   // console.log(userid);
-  getQuestionHistory(matchingUser);
+  getQuestionHistory(user);
 
-  // const userQuestionHistory = matchingUser.history
+  // const userQuestionHistory = user.history
 
   // allQuestions.forEach((question) => {
   //   userQuestionHistory.some((historyQuestion) => {
@@ -124,20 +124,20 @@ export const createNewSession = async (
   userId: string
 ) => {
   // get number of questions from the db
-  const allQuestions = await getNestedDocument("questions", topic, difficulty);
+  const allQuestions = await getQuestionDocuments("questions", topic, difficulty);
   const sessionQuestions = allQuestions.slice(0, numberOfQuestions);
   // get the existing current session
   const currentSessionRef = collection(
     doc(collection(db, 'users'), userId),
     'current_session'
   );
-  const currentSessionExisting = await getDocs(currentSessionRef);
+  const currentSessionExistingSnapshot = await getDocs(currentSessionRef);
   // save the existing current session to previous sessions
   const previousSessionsRef = collection(doc(collection(db, 'users'), userId), 'previous_sessions');
   // send the questions to the database
-  if (currentSessionExisting.docs.length > 0) {
-    await addDoc(previousSessionsRef, currentSessionExisting.docs[0].data())
-    await deleteDoc(doc(currentSessionRef, currentSessionExisting.docs[0].id))
+  if (currentSessionExistingSnapshot.docs.length > 0) {
+    await addDoc(previousSessionsRef, currentSessionExistingSnapshot.docs[0].data())
+    await deleteDoc(doc(currentSessionRef, currentSessionExistingSnapshot.docs[0].id))
   }
   await addDoc(currentSessionRef, {
     questions: sessionQuestions,
@@ -166,8 +166,8 @@ export const getExistingSession = async (
 // compare to user - see what has been looked at
 // -- grab all incorrectly answered & unanswered questions
 // send 10 questions to the user
-// ADD to current session
-// update users list of questions in DB
+// ✅ ADD to current session
+// ✅ update users list of questions in DB
 // if not enough questions (less than 20) - get more Q's from GPT
 // SET new Q's in questions DB
 
@@ -181,5 +181,6 @@ export const getExistingSession = async (
 // List of questions in DB
 
 // * update answers
-// update user answer history
-// update current session is_answered property
+// ✅ update user answer history
+// update current session current_question property
+// update got answer right/wrong in history + current session
