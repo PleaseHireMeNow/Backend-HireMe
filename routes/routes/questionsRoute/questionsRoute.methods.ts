@@ -133,10 +133,10 @@ export const createNewSession = async (
   );
   const currentSessionExisting = await getDocs(currentSessionRef);
   // save the existing current session to previous sessions
-  const existingSessionsRef = collection(doc(collection(db, 'users'), userId), 'history');
+  const previousSessionsRef = collection(doc(collection(db, 'users'), userId), 'previous_sessions');
   // send the questions to the database
   if (currentSessionExisting.docs.length > 0) {
-    await addDoc(existingSessionsRef, currentSessionExisting.docs[0].data())
+    await addDoc(previousSessionsRef, currentSessionExisting.docs[0].data())
     await deleteDoc(doc(currentSessionRef, currentSessionExisting.docs[0].id))
   }
   await addDoc(currentSessionRef, {

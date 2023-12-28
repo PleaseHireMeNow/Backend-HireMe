@@ -7,11 +7,11 @@ export const getUserDocument = async (
 ) => {
   const userRef = doc(collection(db, 'users'), userId);
   const userData = await getDoc(userRef)
-  const sessionHistoryRef = collection(doc(collection(db, 'users'), userId), 'history')
-  const sessionHistoryQuerySnapshot = await getDocs(sessionHistoryRef);
+  const previousSessionsRef = collection(doc(collection(db, 'users'), userId), 'history')
+  const previousSessionsQuerySnapshot = await getDocs(previousSessionsRef);
   let session_history: Session[] = [];
-  if (sessionHistoryQuerySnapshot !== undefined) {
-    sessionHistoryQuerySnapshot.forEach(doc => {
+  if (previousSessionsQuerySnapshot !== undefined) {
+    previousSessionsQuerySnapshot.forEach(doc => {
       const sessionData = doc.data() as Session
       session_history.push(sessionData)
     })
