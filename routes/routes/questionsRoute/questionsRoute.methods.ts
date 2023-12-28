@@ -123,7 +123,6 @@ export const createNewSession = async (
   difficulty: string,
   userId: string
 ) => {
-  console.log(numberOfQuestions, topic, difficulty, userId)
   // get number of questions from the db
   const allQuestions = await getNestedDocument("questions", topic, difficulty);
   const sessionQuestions = allQuestions.slice(0, numberOfQuestions);
@@ -137,7 +136,6 @@ export const createNewSession = async (
   const existingSessionsRef = collection(doc(collection(db, 'users'), userId), 'history');
   // send the questions to the database
   if (currentSessionExisting.docs.length > 0) {
-    console.log(currentSessionExisting.docs[0].data())
     await addDoc(existingSessionsRef, currentSessionExisting.docs[0].data())
     await deleteDoc(doc(currentSessionRef, currentSessionExisting.docs[0].id))
   }
@@ -147,7 +145,19 @@ export const createNewSession = async (
     current_question: 0
   })
   // return the set of questions
-  return sessionQuestions
+  return {questions: sessionQuestions, current_question: 0}
+}
+
+export const getExistingSession = async (
+  userId: string
+) => {
+  // get existing session data
+  const currentSessionRef = collection(
+    doc(collection(db, 'users'), userId),
+    'current_session'
+  );
+  const currentSessionExisting = await getDocs(currentSessionRef);
+  return currentSessionExisting.docs[0].data();
 }
 
 // * Get questions flow

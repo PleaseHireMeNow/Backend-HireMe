@@ -4,7 +4,7 @@ import { User } from "../../../types/models/Questions";
 import { getUsersInfo } from "./questionsRoute.methods";
 const router = express.Router();
 
-import { createNewSession, compareQuestionLists } from "./questionsRoute.methods";
+import { createNewSession, getExistingSession } from "./questionsRoute.methods";
 
 router.get("/:userid/:session", async (req, res) => {
   // check if user id exists
@@ -31,8 +31,11 @@ router.get("/:userid/:session", async (req, res) => {
     let difficulty = matchingUser.topic_selection[0].difficulty.name;
     
     if (req.params.session === 'new') {
-      const allQuestions = await createNewSession(10, topic, difficulty, matchingUser.user_id);
-      res.send(allQuestions).status(200);
+      const sessionData = await createNewSession(10, topic, difficulty, matchingUser.user_id);
+      res.send(sessionData).status(200);
+    } else if (req.params.session === 'prev') {
+      const sessionData = await getExistingSession(matchingUser.user_id);
+      res.send(sessionData).status(200);
     }
     // const userQuestionHistory = matchingUser.history
 
