@@ -77,13 +77,13 @@ export const compareQuestionLists = async (
           historyQuestion.answered_incorrectly >=
           historyQuestion.answered_correctly;
 
-        console.log(matchingQiestionId, moreWrong);
+        // console.log(matchingQiestionId, moreWrong);
 
         return (matchingQiestionId || moreWrong)
         
       })
     ) {
-      console.log("it works!");
+      // console.log("it works!");
       questionList.push(question);
     }
   });

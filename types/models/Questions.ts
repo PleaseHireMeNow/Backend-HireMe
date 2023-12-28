@@ -19,7 +19,8 @@ export interface AnswerHistory {
       timestamp: Timestamp,
       response: {
         "answer": Answer
-      }
+      },
+      session_id: string
     }
   ]
 }

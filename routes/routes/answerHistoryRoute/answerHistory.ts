@@ -1,7 +1,9 @@
 import express, { Application, Request, Response } from 'express';
 const router = express.Router();
 import question from '../../../testing/db/question.json'
-import { postAnswerHistory } from './answerHistory.methods';
+import { User } from '../../../types/models/Questions';
+import { getMatchingUser } from '../../utils/users.utils';
+import { getCurrentSessionDocumentSnapshot, postAnswerHistory } from './answerHistory.methods';
 
 router.get('/:userid', (req: Request, res: Response) => {
   // ! might need to update this later once we get the database up and running
@@ -11,26 +13,31 @@ router.get('/:userid', (req: Request, res: Response) => {
   ) {
     res.sendStatus(403);
   }
-
-  res.status(200).send(question)
+  else (
+    res.status(200).send(question)
+  )
 
 })
 
-router.post('/:userid', (req: Request, res: Response) => {
+router.post('/:userid', async (req: Request, res: Response) => {
   // console.log('req.params is:', req.params);
-  const answer = req.body.answer;
-  const userId = 'HzseqOG9O5zX5nsznsVz'
+  const answer = req.body.answer || {
+    answer_content: {
+      text: "A JavaScript library for building user interfaces."
+    },
+    is_correct: true
+  };
+  const user = await getMatchingUser(req.params.userid) as User;
+  const questionData = question[0]
+  const currentSessionDocumentSnapshot = await getCurrentSessionDocumentSnapshot(user.user_id)
 
   postAnswerHistory(
-    userId,
-    {
-      answer_content: {
-        text: "A JavaScript library for building user interfaces."
-      },
-      is_correct: true
-    },
-    question[0]
-    )
+    user.user_id,
+    answer,
+    questionData,
+    currentSessionDocumentSnapshot.id
+  );
+
   res.sendStatus(200)
 
 })
