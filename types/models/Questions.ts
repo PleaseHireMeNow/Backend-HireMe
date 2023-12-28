@@ -10,6 +10,7 @@ export interface Answer {
 }
 
 export interface AnswerHistory {
+  'question_id': string;
   'question_content': QuestionContent;
   'answered_correctly': number;
   'answered_incorrectly': number;
@@ -75,5 +76,12 @@ export interface SessionQuestion {
   question: Question,
   answer: Answer
 }
+
+export interface NewSessionResponse {
+  sessionQuestionList: Question[],
+  needMoreQuestionsFlag: boolean,
+  current_question: number
+}
+
 
 export type Questions = Question[];

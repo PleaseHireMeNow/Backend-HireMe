@@ -33,11 +33,11 @@ router.get("/:userid/:session", async (req, res) => {
     let difficulty = user.topic_selection[0].difficulty.name;
     
     if (req.params.session === 'new') {
-      const sessionData = await createNewSession(10, topic, difficulty, user.user_id);
-      res.send(sessionData).status(200);
+      const sessionResponse = await createNewSession(10, topic, difficulty, user.user_id);
+      res.send(sessionResponse).status(200);
     } else if (req.params.session === 'prev') {
-      const sessionData = await getExistingSession(user.user_id);
-      res.send(sessionData).status(200);
+      const sessionResponse = await getExistingSession(user.user_id);
+      res.send(sessionResponse).status(200);
     }
     // const userQuestionHistory = user.history
 
