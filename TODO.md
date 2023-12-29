@@ -45,6 +45,15 @@ update user topic selection
 update user topic and difficulty selection
 order and clean up types
 
+CHECK RETURN for user session history????
+
+**generating new question topics**
+✅ if there are no questions (allQuestions = 0 OR less than 30)
+✅ generate 10 questions with new topic
+✅ send back the 10
+✅ generate 10 more
+
+
 **stretch**
 ability for user to redo a previous session
 
@@ -52,3 +61,4 @@ ability for user to redo a previous session
 registration route
 login route
 log out route
+

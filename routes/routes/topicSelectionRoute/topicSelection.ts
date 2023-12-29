@@ -4,40 +4,25 @@ const router = express.Router();
 
 // Dummy Data
 import user from "../../../testing/db/user.json";
+import { getMatchingUser } from "../../utils/users.utils";
+import { updateTopicAndDifficulty } from "./topicSelection.method";
 const selection = user[0].topic_selection;
 // * ROUTES
 
-router.get("/:userid", (req, res) => {
-  //query the database to check if the user id is valid
-  if (req.params.userid !== "string1") {
-    res.sendStatus(403);
-  }
-  // Send status 200 and array of strings
-  res.status(200).send(selection);
-});
+router.put("/:userid", async (req, res) => {
+  const userId = req.params.userid;
+  const user = await getMatchingUser(userId);
+  const topic = req.body.topic;
+  const difficulty = req.body.difficulty;
 
-router.post("/:userid", (req, res) => {
-  //query the database to check if the user id is valid
-  if (req.params.userid !== "string1") {
+  // check if user id exists
+  if (
+    //query the database to check if the user id is valid
+    user?.username !== userId
+  ) {
     res.sendStatus(403);
-  }
-  // Send status 200 and array of strings
-  res.sendStatus(200);
-});
-
-router.put("/:userid", (req, res) => {
-  //query the database to check if the user id is valid
-  if (req.params.userid !== "string1") {
-    res.sendStatus(403);
-  }
-  // Send status 200 and array of strings
-  res.sendStatus(200);
-});
-
-router.delete("/:userid", (req, res) => {
-  //query the database to check if the user id is valid
-  if (req.params.userid !== "string1") {
-    res.sendStatus(403);
+  } else {
+    updateTopicAndDifficulty(topic, difficulty, user.user_id);
   }
   // Send status 200 and array of strings
   res.sendStatus(200);

@@ -1,16 +1,18 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { Session } from "../../../types/models/Questions";
+import { Session } from "../../../types/models/models";
 
 export const getUserDocument = async (userId: string) => {
   const userRef = doc(collection(db, "users"), userId);
   const userData = await getDoc(userRef);
   const previousSessionsRef = collection(
     doc(collection(db, "users"), userId),
-    "history"
+    "previous_sessions"
   );
+
   const previousSessionsQuerySnapshot = await getDocs(previousSessionsRef);
   let session_history: Session[] = [];
+
   if (previousSessionsQuerySnapshot !== undefined) {
     previousSessionsQuerySnapshot.forEach(doc => {
       const sessionData = doc.data() as Session;
