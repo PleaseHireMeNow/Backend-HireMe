@@ -71,18 +71,19 @@ export interface Session {
   answered_correctly: number,
   timestamp: Timestamp,
   questions: SessionQuestion[],
+  session_id?: string
 }
 
 export interface SessionQuestion {
   question: Question,
-  answer: Answer
+  answer?: Answer
 }
 
-export interface NewSessionResponse {
-  sessionQuestionList: Question[],
-  needMoreQuestionsFlag: boolean,
-  current_question: number
-}
+// export interface NewSessionResponse {
+//   sessionQuestionList: Question[],
+//   needMoreQuestionsFlag: boolean,
+//   current_question: number
+// }
 
 
 export type Questions = Question[];
