@@ -50,9 +50,7 @@ router.get("/:userid/:session/", async (req, res) => {
 
     res.send(sessionResponse.sessionObject).status(200);
 
-
-
-    sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty)
+    sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty);
   }
 });
 

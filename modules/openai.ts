@@ -2,7 +2,7 @@ import "dotenv/config";
 import OpenAI from "openai";
 // import Configuration from "openai";
 // import CreateChatCompletionRequest from "openai";
-import  CreateChatCompletionRequestMessage from "openai/resources";
+import CreateChatCompletionRequestMessage from "openai/resources";
 import questionFormat from "../types/gptJson/question-format.json";
 
 const openai = new OpenAI();
@@ -21,8 +21,7 @@ export const gptSendPrompt = async (
   //   priorQuestionsList,
   //   responseQuantity
   // );
-  console.log('prompt sent!');
-  
+  console.log("prompt sent!");
 
   // this is the call to Open AI
   const response = await openai.chat.completions.create({
@@ -75,8 +74,8 @@ export const gptSendPrompt = async (
     temperature: 0,
   });
 
-  console.log('prompt Done!');
-  
+  console.log("prompt Done!");
+
   // return the response
   return response;
 };
@@ -88,7 +87,6 @@ const gptMessageConfig = (
   priorQuestionsList: string[],
   responseQuantity: number
 ) => {
-
   const gptMessage = [
     {
       role: "system",
@@ -133,5 +131,5 @@ const gptMessageConfig = (
       `,
     },
   ];
-  return gptMessage
+  return gptMessage;
 };

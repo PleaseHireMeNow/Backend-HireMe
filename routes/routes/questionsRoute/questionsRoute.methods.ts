@@ -173,8 +173,7 @@ export const getExistingSession = async (userId: string) => {
 };
 
 export const invokeGpt = async (topic: string, difficulty: string) => {
-
-  console.log('GPT invoked!');
+  console.log("GPT invoked!");
   // Get list of questions under topic->difficulty as REF for GPT prompt
   const allQuestions = await getQuestionDocuments(topic, difficulty);
   const allQuestionsContentText: string[] = [];
@@ -198,9 +197,8 @@ export const invokeGpt = async (topic: string, difficulty: string) => {
   const gptResponseJson = JSON.parse(gptResponse || "");
 
   await setQuestionDoc(topic, difficulty, gptResponseJson.questions);
-  console.log('GPT questions added!');
+  console.log("GPT questions added!");
 };
-
 
 // * Send new questions to DB
 const setQuestionDoc = async (

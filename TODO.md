@@ -1,5 +1,4 @@
-
-// * Get questions flow
+// \* Get questions flow
 // ✅ get questions from DB
 // ✅ get userHistory from DB
 // ✅ compare to user - see what has been looked at
@@ -11,7 +10,7 @@
 // ✅ if not enough questions (less than 20) - get more Q's from GPT
 // ✅ SET new Q's in questions DB
 
-// * AI needs
+// \* AI needs
 // ✅ Get a list of questions (tech stack & level)
 
 // What to give to prompt
@@ -20,12 +19,10 @@
 // ✅ List of questions in DB
 // variable number of questions to generate (deal with later)
 
-// * update answers
+// \* update answers
 // ✅ update user answer history
 // ✅ update current session current_question property
 // ✅ update got answer right/wrong in history + current session
-
-
 
 ** MORE THINGS **
 ✅ Update current session to include responses when answerHistory api is called
@@ -35,7 +32,6 @@
 ✅ add session_id field to current session
 ✅ update session_id when moving session to previous
 
-
 ✅ remove flag from res.send to frontend
 ✅ add AI flow to end of new session request
-DELETE flag route & documentation
+✅ DELETE flag route & documentation

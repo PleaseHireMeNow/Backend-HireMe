@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-import topicOptions from '../../../testing/db/topic-options.json'
+import { getTopicOptions } from './topicOptions.methods';
 
-router.get('/', (req, res) => {
+router.get('/:userid', async (req, res) => {
+  
 
-  res.status(200).send(topicOptions);
+  const topicOptions = await getTopicOptions()
+
+
+  res.send(topicOptions).status(200);
 
 })
 
