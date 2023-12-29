@@ -18,6 +18,6 @@ export const getUsersInfo = async () => {
 };
 
 export const getMatchingUser = async (userId: string) => {
-  const users = await getUsersInfo()
+  const users = await getUsersInfo();
   return users.find(user => user.username === userId) as User;
-}
+};
