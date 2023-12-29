@@ -1,6 +1,24 @@
-[
+
+
+// import { doc, setDoc } from 'firebase/firestore';
+// import { questionsCol } from '../database/firestore';
+import { Questions, Question } from '../types/models/Questions';
+
+
+//this function will evole into the function that interfaces with data directly from GPT
+
+// export const importQuestionData = async () => {
+//     console.log('importing sample data !!!!');       
+//     for (let questionf of questionArray) {
+//         const questionRef = doc(questionsCol)
+//         await setDoc(questionRef, questionf)
+//     }
+// }
+
+
+const questionArray: Question[] = [
   {
-    "question_id": "6G7ItbMteaTdwrKU43LS",
+    "question_id": "",
     "rating": 0,
     "question_content": {
       "text": "What is React?",
@@ -184,7 +202,7 @@
         },
         {
           "answer_content": {
-            "text": "A built_in React library for managing global state."
+            "text": "A built-in React library for managing global state."
           },
           "is_correct": false
         },
@@ -277,7 +295,7 @@
         },
         {
           "answer_content": {
-            "text": "A built_in React component for handling user input."
+            "text": "A built-in React component for handling user input."
           },
           "is_correct": false
         },
@@ -662,3 +680,5 @@
     }
   }
 ]
+
+
