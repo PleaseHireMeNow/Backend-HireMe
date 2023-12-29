@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import question from "../../../testing/db/question.json";
-import { User } from "../../../types/models/Questions";
+import { User } from "../../../types/models/models";
 import { getMatchingUser } from "../../utils/users.utils";
 import {
   getCurrentSessionDocumentSnapshot,

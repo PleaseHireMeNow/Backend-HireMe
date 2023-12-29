@@ -3,7 +3,7 @@ import {
   Question,
   Session,
   SessionQuestion,
-} from "../../../types/models/Questions";
+} from "../../../types/models/models";
 import {
   collection,
   doc,
@@ -14,7 +14,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { User } from "../../../types/models/Questions";
+import { User } from "../../../types/models/models";
 import { getQuestionDocuments } from "../../utils/questionDocs.utils";
 import { gptSendPrompt } from "../../../modules/openai";
 

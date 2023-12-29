@@ -52,18 +52,22 @@ export interface User {
   username: string;
   topic_selection: [
     {
-      topic: {
-        name: string;
-        iconPath: string;
-      };
-      difficulty: {
-        name: string;
-        iconPath: string;
-      };
+      topic: Topic;
+      difficulty: Difficulty;
     }
   ];
   is_guest: boolean;
   history: AnswerHistory[];
+}
+
+export interface Topic {
+  name: string;
+  iconPath: string;
+}
+
+export interface Difficulty {
+  name: string;
+  iconPath: string;
 }
 
 export interface Session {

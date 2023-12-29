@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { Session } from "../../../types/models/Questions";
+import { Session } from "../../../types/models/models";
 
 export const getUserDocument = async (userId: string) => {
   const userRef = doc(collection(db, "users"), userId);

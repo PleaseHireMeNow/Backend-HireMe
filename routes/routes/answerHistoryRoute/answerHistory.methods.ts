@@ -3,7 +3,7 @@ import {
   AnswerHistory,
   Question,
   Session,
-} from "../../../types/models/Questions";
+} from "../../../types/models/models";
 import {
   collection,
   doc,

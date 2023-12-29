@@ -5,7 +5,7 @@ import {
   getExistingSession,
   invokeGpt,
 } from "./questionsRoute.methods";
-import { Session } from "../../../types/models/Questions";
+import { Session } from "../../../types/models/models";
 
 const router = express.Router();
 
