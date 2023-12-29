@@ -9,7 +9,6 @@ import registerRouter from './routes/routes/registerRoute/registerRoute'
 import topicOptionsRouter from './routes/routes/topicOptionsRoute/topicOptionsRoute'
 import topicSelectionRouter from './routes/routes/topicSelectionRoute/topicSelection'
 import userRouter from './routes/routes/userRoute/userRoute'
-import flagRouter from './routes/routes/flagRoute/flagRoute'
 
 dotenv.config();
 
@@ -29,7 +28,6 @@ app.use('/api/register', registerRouter);
 app.use('/api/topic_options', topicOptionsRouter);
 app.use('/api/topic_selection', topicSelectionRouter);
 app.use('/api/user', userRouter);
-app.use('/api/flag', flagRouter);
 
 if (process.env.NODE_ENV !== 'test'){
   app.listen(PORT, () => {

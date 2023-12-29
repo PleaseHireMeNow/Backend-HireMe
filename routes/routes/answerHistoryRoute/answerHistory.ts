@@ -21,6 +21,7 @@ router.get('/:userid', (req: Request, res: Response) => {
 
 router.post('/:userid', async (req: Request, res: Response) => {
   // console.log('req.params is:', req.params);
+  // ! get rid of || object used for testing
   const answer = req.body.answer || {
     answer_content: {
       text: "A JavaScript library for building user interfaces."

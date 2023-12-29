@@ -1,5 +1,6 @@
 import {
   AnswerHistory,
+  Question,
   Session,
   SessionQuestion,
 } from "../../../types/models/Questions";
@@ -16,7 +17,6 @@ import { db } from "../../../modules/db";
 import { User } from "../../../types/models/Questions";
 import { getQuestionDocuments } from "../../utils/questionDocs.utils";
 import { gptSendPrompt } from "../../../modules/openai";
-import { setQuestionDoc } from "../flagRoute/flagRoute.methods";
 
 export const getUsersInfo = async () => {
   const usersInfoRef = collection(db, "users");
@@ -152,7 +152,7 @@ export const createNewSession = async (
   }
 
   const currentSessionDocRef = doc(currentSessionCollectionRef);
-  console.log(currentSessionDocRef.id);
+  // console.log(currentSessionDocRef.id);
 
   sessionResponse.sessionObject.session_id = currentSessionDocRef.id;
   const currentSession = sessionResponse.sessionObject;
@@ -199,4 +199,26 @@ export const invokeGpt = async (topic: string, difficulty: string) => {
 
   await setQuestionDoc(topic, difficulty, gptResponseJson.questions);
   console.log('GPT questions added!');
+};
+
+
+// * Send new questions to DB
+const setQuestionDoc = async (
+  topic: string,
+  difficulty: string,
+  questionArray: Question[]
+) => {
+  questionArray.forEach(async question => {
+    try {
+      const dataRef = doc(
+        collection(doc(collection(db, "questions"), topic), difficulty)
+      );
+
+      question.question_id = dataRef.id;
+
+      await setDoc(dataRef, question);
+    } catch (error) {
+      console.error("Error happened in setQuestionDoc", error);
+    }
+  });
 };
