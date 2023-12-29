@@ -57,10 +57,15 @@ const addAnswerToCurrentSession = async (
   // create reference for current session
   const currentSessionDocumentSnapshot = await getCurrentSessionDocumentSnapshot(userId)
   const currentSessionDocument = currentSessionDocumentSnapshot.data() as Session
-  // update questioncontent in current session
+  // update question content in current session
   const currentSessionDocumentRef = await getCurrentSessionDocumentRef(userId)
   await setDoc(currentSessionDocumentRef, { current_question: currentSessionDocument.current_question + 1 }, { merge: true });
-  answer.is_correct && await setDoc(currentSessionDocumentRef, { answered_correctly: currentSessionDocument.answered_correctly || 1 }, { merge: true });
+  const currentSessionQuestionsArray = currentSessionDocument.questions
+  const currentQuestionIndex = currentSessionDocument.current_question
+
+  currentSessionQuestionsArray[currentQuestionIndex].answer = answer;
+
+  answer.is_correct && await setDoc(currentSessionDocumentRef, { answered_correctly: currentSessionDocument.answered_correctly || 1, questions: currentSessionQuestionsArray }, { merge: true });
   console.log(currentSessionDocument.current_question)
 }
 

@@ -15,6 +15,8 @@ import {
 import { db } from "../../../modules/db";
 import { User } from "../../../types/models/Questions";
 import { getQuestionDocuments } from "../../utils/questionDocs.utils";
+import { gptSendPrompt } from "../../../modules/openai";
+import { setQuestionDoc } from "../flagRoute/flagRoute.methods";
 
 export const getUsersInfo = async () => {
   const usersInfoRef = collection(db, "users");
@@ -80,12 +82,11 @@ export const compareQuestionLists = async (
 
         // console.log(matchingQuestionId, moreWrong);
 
-        return (matchingQuestionId || moreWrong)
-        
+        return matchingQuestionId || moreWrong;
       })
     ) {
       // console.log("it works!");
-      questionList.push({question});
+      questionList.push({ question });
     }
   });
 
@@ -104,11 +105,11 @@ export const compareQuestionLists = async (
     answered_correctly: 0,
     timestamp: Timestamp.fromDate(new Date()),
     questions: sessionQuestionList,
-  }
+  };
 
-return {sessionObject, needMoreQuestionsFlag}
+  return { sessionObject, needMoreQuestionsFlag };
   // return { sessionQuestionList, needMoreQuestionsFlag, current_question: 0 };
-}; 
+};
 
 export const createNewSession = async (
   numberOfQuestions: number,
@@ -117,14 +118,10 @@ export const createNewSession = async (
   userId: string
 ) => {
   // compare questions, return list of unanswered questions
-  let sessionResponse: {sessionObject: Session, needMoreQuestionsFlag: boolean} = await compareQuestionLists(
-    topic,
-    difficulty,
-    userId,
-    numberOfQuestions
-  );
-
-
+  let sessionResponse: {
+    sessionObject: Session;
+    needMoreQuestionsFlag: boolean;
+  } = await compareQuestionLists(topic, difficulty, userId, numberOfQuestions);
 
   // get the existing current session
   const currentSessionCollectionRef = collection(
@@ -132,7 +129,9 @@ export const createNewSession = async (
     "current_session"
   );
 
-  const currentSessionExistingSnapshot = await getDocs(currentSessionCollectionRef);
+  const currentSessionExistingSnapshot = await getDocs(
+    currentSessionCollectionRef
+  );
   // save the existing current session to previous sessions
   const previousSessionsRef = collection(
     doc(collection(db, "users"), userId),
@@ -145,15 +144,18 @@ export const createNewSession = async (
       currentSessionExistingSnapshot.docs[0].data()
     );
     await deleteDoc(
-      doc(currentSessionCollectionRef, currentSessionExistingSnapshot.docs[0].id)
+      doc(
+        currentSessionCollectionRef,
+        currentSessionExistingSnapshot.docs[0].id
+      )
     );
   }
 
-  const currentSessionDocRef = doc(currentSessionCollectionRef)
+  const currentSessionDocRef = doc(currentSessionCollectionRef);
   console.log(currentSessionDocRef.id);
 
   sessionResponse.sessionObject.session_id = currentSessionDocRef.id;
-  const currentSession = sessionResponse.sessionObject
+  const currentSession = sessionResponse.sessionObject;
 
   await setDoc(currentSessionDocRef, currentSession);
   // return the set of questions
@@ -167,5 +169,34 @@ export const getExistingSession = async (userId: string) => {
     "current_session"
   );
   const currentSessionExisting = await getDocs(currentSessionRef);
-  return currentSessionExisting.docs[0].data();
+  return currentSessionExisting.docs[0].data() as Session;
+};
+
+export const invokeGpt = async (topic: string, difficulty: string) => {
+
+  console.log('GPT invoked!');
+  // Get list of questions under topic->difficulty as REF for GPT prompt
+  const allQuestions = await getQuestionDocuments(topic, difficulty);
+  const allQuestionsContentText: string[] = [];
+
+  // map questions text only
+  allQuestions.map(question => {
+    allQuestionsContentText.push(question.question_content.text);
+  });
+
+  // * GPT get question data!
+  // ! SETUP YOUR OWN GPT ACCOUNT AND ADD YOUR KEY TO .env AS: "OPENAI_API_KEY"
+  const result = await gptSendPrompt(
+    topic,
+    difficulty,
+    allQuestionsContentText,
+    10
+  );
+
+  // grab response content and parse to JSON
+  const gptResponse = result.choices[0].message.content;
+  const gptResponseJson = JSON.parse(gptResponse || "");
+
+  await setQuestionDoc(topic, difficulty, gptResponseJson.questions);
+  console.log('GPT questions added!');
 };

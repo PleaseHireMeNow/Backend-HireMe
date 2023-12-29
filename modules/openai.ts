@@ -21,6 +21,8 @@ export const gptSendPrompt = async (
   //   priorQuestionsList,
   //   responseQuantity
   // );
+  console.log('prompt sent!');
+  
 
   // this is the call to Open AI
   const response = await openai.chat.completions.create({
@@ -72,6 +74,9 @@ export const gptSendPrompt = async (
     ],
     temperature: 0,
   });
+
+  console.log('prompt Done!');
+  
   // return the response
   return response;
 };

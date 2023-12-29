@@ -22,19 +22,20 @@
 
 // * update answers
 // ✅ update user answer history
-// update current session current_question property
-// update got answer right/wrong in history + current session
+// ✅ update current session current_question property
+// ✅ update got answer right/wrong in history + current session
 
 
 
 ** MORE THINGS **
-Update current session to include responses when answerHistory api is called
+✅ Update current session to include responses when answerHistory api is called
 ✅ update how session history is stored when a new session is started (document per session)
 ✅ -- make questions into SessionQuestions in current session
 
-add session_id field to current session
-update session_id when moving session to previous
+✅ add session_id field to current session
+✅ update session_id when moving session to previous
 
 
-remove flag and add AI flow to end of new session request
+✅ remove flag from res.send to frontend
+✅ add AI flow to end of new session request
 DELETE flag route & documentation
