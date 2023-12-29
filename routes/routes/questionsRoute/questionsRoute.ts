@@ -1,7 +1,5 @@
 import express from "express";
 import { getMatchingUser } from "../../utils/users.utils";
-const router = express.Router();
-
 import {
   createNewSession,
   getExistingSession,
@@ -9,10 +7,16 @@ import {
 } from "./questionsRoute.methods";
 import { Session } from "../../../types/models/Questions";
 
+const router = express.Router();
+
 router.get("/:userid/:session/", async (req, res) => {
   // get user id info from DB
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
+
+  // looking up the user's topic(s) and difficulty(ies)
+  const topic = user.topic_selection[0].topic.name;
+  const difficulty = user.topic_selection[0].difficulty.name;
 
   // check if user id exists
   if (
@@ -21,11 +25,8 @@ router.get("/:userid/:session/", async (req, res) => {
   ) {
     res.sendStatus(403);
   } else {
-    // looking up the user's topic(s) and difficulty(ies)
-    let topic = user.topic_selection[0].topic.name;
-    let difficulty = user.topic_selection[0].difficulty.name;
-
     let sessionObject: Session = {} as Session;
+
     let sessionResponse: {
       sessionObject: Session;
       needMoreQuestionsFlag: boolean;
@@ -44,7 +45,9 @@ router.get("/:userid/:session/", async (req, res) => {
 
     res.send(sessionResponse.sessionObject).status(200);
 
-    sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty);
+    console.log('GPT flag is: ', sessionResponse.needMoreQuestionsFlag);
+    
+    // sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty, 10);
   }
 });
 
