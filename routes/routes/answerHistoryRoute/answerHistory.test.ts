@@ -1,5 +1,5 @@
-import express, { Application, Request, Response } from "express";
-import question from "../../testing/db/question.json";
+import { Response } from "express";
+import question from "../../../testing/db/question.json";
 
 const app = require("../../server");
 const request = require("supertest");

@@ -1,0 +1,33 @@
+[
+  {
+    "question_content": {
+      "text": "string",
+      "answers": [
+        {
+          "answer_content": {
+            "text": "string"
+          },
+          "is_correct": "boolean"
+        },
+        {
+          "answer_content": {
+            "text": "string"
+          },
+          "is_correct": "boolean"
+        },
+        {
+          "answer_content": {
+            "text": "string"
+          },
+          "is_correct": "boolean"
+        },
+        {
+          "answer_content": {
+            "text": "string"
+          },
+          "is_correct": "boolean"
+        }
+      ]
+    }
+  }
+]
