@@ -1,5 +1,6 @@
 import {
   AnswerHistory,
+  NewSessionResponse,
   Question,
   Session,
   SessionQuestion,
@@ -12,6 +13,7 @@ import {
   deleteDoc,
   Timestamp,
   setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../../modules/db";
 import { User } from "../../../types/models/models";
@@ -61,17 +63,16 @@ export const compareQuestionLists = async (
   // get number of questions from the db
   let allQuestions = await getQuestionDocuments(topic, difficulty);
 
-
   if (allQuestions.length < 10) {
-    const numberToGrab = 10 - allQuestions.length
-    
-    console.log('\nNo questions for:', topic, difficulty );
+    const numberToGrab = 10 - allQuestions.length;
+
+    console.log("\nNo questions for:", topic, difficulty);
     // console.log('getting a quick 10 from GPT');
-    console.time('invokeGptTime'); // start the timer
+    console.time("invokeGptTime"); // start the timer
     await invokeGpt(topic, difficulty, numberToGrab);
-    console.timeEnd('invokeGptTime'); // end the timer & log the time
+    console.timeEnd("invokeGptTime"); // end the timer & log the time
     // console.log('done getting 10 from GPT\n');
-    
+
     allQuestions = await getQuestionDocuments(topic, difficulty);
   }
 
@@ -89,7 +90,7 @@ export const compareQuestionLists = async (
 
   // compare questions and find 10 new questions from list of allQuestions
   allQuestions.forEach(question => {
-    // If answer_history exists compare, else add all questions to list 
+    // If answer_history exists compare, else add all questions to list
     if (
       userAnsweredQuestions.some(historyQuestion => {
         const matchingQuestionId =
@@ -108,7 +109,6 @@ export const compareQuestionLists = async (
       questionList.push({ question });
     }
   });
-
 
   // console.log('questionList is: ', questionList);
   console.log("questionList length is: ", questionList.length);
@@ -131,19 +131,19 @@ export const compareQuestionLists = async (
   // return { sessionQuestionList, needMoreQuestionsFlag, current_question: 0 };
 };
 
-export const createNewSession = async (
+export const createNewSessionResponse = async (
   numberOfQuestions: number,
   topic: string,
   difficulty: string,
   userId: string
 ) => {
   // compare questions, return list of unanswered questions
-  let sessionResponse: {
-    sessionObject: Session;
-    needMoreQuestionsFlag: boolean;
-  } = await compareQuestionLists(topic, difficulty, userId, numberOfQuestions);
+  let sessionResponse: NewSessionResponse = await compareQuestionLists(topic, difficulty, userId, numberOfQuestions);
 
-  
+  return await createNewSession(sessionResponse, userId) as NewSessionResponse;
+};
+
+export const createNewSession = async (sessionResponse: NewSessionResponse, userId: string) => {
   // get the existing current session reference
   const currentSessionCollectionRef = collection(
     doc(collection(db, "users"), userId),
@@ -188,7 +188,7 @@ export const createNewSession = async (
   return sessionResponse;
 };
 
-export const getExistingSession = async (userId: string) => {
+export const getExistingCurrentSession = async (userId: string) => {
   // get existing session data
   const currentSessionRef = collection(
     doc(collection(db, "users"), userId),
@@ -198,7 +198,31 @@ export const getExistingSession = async (userId: string) => {
   return currentSessionExisting.docs[0].data() as Session;
 };
 
-export const invokeGpt = async (topic: string, difficulty: string, numberOfQuestions: number) => {
+export const getExistingPreviousSession = async (userId: string, sessionId: string) => {
+  // get previous session data
+  const previousSessionRef = doc(collection(
+    doc(collection(db, "users"), userId),
+    "previous_sessions"), sessionId);
+
+  const previousSessionExisting = await getDoc(previousSessionRef);
+  return previousSessionExisting.data() as Session;
+};
+
+export const deleteExistingPreviousSession = async (userId: string, sessionId: string) => {
+  // get previous session data
+  const previousSessionRef = doc(collection(
+    doc(collection(db, "users"), userId),
+    "previous_sessions"), sessionId);
+
+    await deleteDoc(previousSessionRef)
+}
+
+
+export const invokeGpt = async (
+  topic: string,
+  difficulty: string,
+  numberOfQuestions: number
+) => {
   console.log("GPT invoked!");
   // Get list of questions under topic->difficulty as REF for GPT prompt
   const allQuestions = await getQuestionDocuments(topic, difficulty);

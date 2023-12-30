@@ -2,10 +2,12 @@ import express from "express";
 import { getMatchingUser } from "../../utils/users.utils";
 import {
   createNewSession,
-  getExistingSession,
+  createNewSessionResponse,
+  getExistingCurrentSession as getExistingCurrentSession,
+  getExistingPreviousSession,
   invokeGpt,
 } from "./questionsRoute.methods";
-import { Session } from "../../../types/models/models";
+import { NewSessionResponse, Session } from "../../../types/models/models";
 
 const router = express.Router();
 
@@ -27,28 +29,59 @@ router.get("/:userid/:session/", async (req, res) => {
   } else {
     let sessionObject: Session = {} as Session;
 
-    let sessionResponse: {
-      sessionObject: Session;
-      needMoreQuestionsFlag: boolean;
-    } = { sessionObject, needMoreQuestionsFlag: false };
+    let sessionResponse: NewSessionResponse = { sessionObject, needMoreQuestionsFlag: false };
 
     if (req.params.session === "new") {
-      sessionResponse = await createNewSession(
+      sessionResponse = await createNewSessionResponse(
         10,
         topic,
         difficulty,
         user.user_id
       );
     } else if (req.params.session === "prev") {
-      sessionResponse.sessionObject = await getExistingSession(user.user_id);
+      sessionResponse.sessionObject = await getExistingCurrentSession(user.user_id);
     }
 
     res.send(sessionResponse.sessionObject).status(200);
 
     console.log('GPT flag is: ', sessionResponse.needMoreQuestionsFlag);
+    sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty, 10);
     
-    // sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty, 10);
   }
 });
+
+router.put("/:userid/:sessionid", async (req, res) => {
+
+  const userId = req.params.userid;
+  const user = await getMatchingUser(userId);
+
+  // check if user id exists
+  if (
+    //query the database to check if the user id is valid
+    user?.username !== userId
+  ) {
+    res.sendStatus(403);
+  } else {
+    // get old session data by id
+const existingPreviousSession: Session = await getExistingPreviousSession(user.user_id, req.params.sessionid)
+
+const existingPreviousSessionResponse: NewSessionResponse = {
+  sessionObject: existingPreviousSession, 
+  needMoreQuestionsFlag: false
+}
+
+createNewSession(existingPreviousSessionResponse, user.user_id)
+
+
+
+    
+    // put current session in previous sessions
+    // delete current session
+    // put old session in current session
+    res.sendStatus(200);
+  }
+
+});
+
 
 export default router;
