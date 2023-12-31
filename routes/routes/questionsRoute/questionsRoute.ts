@@ -29,7 +29,10 @@ router.get("/:userid/:session/", async (req, res) => {
   } else {
     let sessionObject: Session = {} as Session;
 
-    let sessionResponse: NewSessionResponse = { sessionObject, needMoreQuestionsFlag: false };
+    let sessionResponse: NewSessionResponse = {
+      sessionObject,
+      needMoreQuestionsFlag: false,
+    };
 
     if (req.params.session === "new") {
       sessionResponse = await createNewSessionResponse(
@@ -39,19 +42,19 @@ router.get("/:userid/:session/", async (req, res) => {
         user.user_id
       );
     } else if (req.params.session === "prev") {
-      sessionResponse.sessionObject = await getExistingCurrentSession(user.user_id);
+      sessionResponse.sessionObject = await getExistingCurrentSession(
+        user.user_id
+      );
     }
 
     res.send(sessionResponse.sessionObject).status(200);
 
-    console.log('GPT flag is: ', sessionResponse.needMoreQuestionsFlag);
+    console.log("GPT flag is: ", sessionResponse.needMoreQuestionsFlag);
     sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty, 10);
-    
   }
 });
 
 router.put("/:userid/:sessionid", async (req, res) => {
-
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
 
@@ -63,25 +66,23 @@ router.put("/:userid/:sessionid", async (req, res) => {
     res.sendStatus(403);
   } else {
     // get old session data by id
-const existingPreviousSession: Session = await getExistingPreviousSession(user.user_id, req.params.sessionid)
+    const existingPreviousSession: Session = await getExistingPreviousSession(
+      user.user_id,
+      req.params.sessionid
+    );
 
-const existingPreviousSessionResponse: NewSessionResponse = {
-  sessionObject: existingPreviousSession, 
-  needMoreQuestionsFlag: false
-}
+    const existingPreviousSessionResponse: NewSessionResponse = {
+      sessionObject: existingPreviousSession,
+      needMoreQuestionsFlag: false,
+    };
 
-createNewSession(existingPreviousSessionResponse, user.user_id)
-
-
-
-    
     // put current session in previous sessions
     // delete current session
     // put old session in current session
+    createNewSession(existingPreviousSessionResponse, user.user_id);
+
     res.sendStatus(200);
   }
-
 });
-
 
 export default router;

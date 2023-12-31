@@ -42,9 +42,9 @@
 ✅ - do we need get or delete?
 ✅ - can this all be done in a PUT route?
 
-order and clean up types
+✅ order and clean up types
 
-WHY DOES SESSION ID NOT MATCH??
+✅ WHY DOES SESSION ID NOT MATCH??
 
 ✅ update user session history to grab session history instead of answer history
 
