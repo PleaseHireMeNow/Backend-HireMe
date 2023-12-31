@@ -113,8 +113,8 @@ export const compareQuestionLists = async (
   // console.log('questionList is: ', questionList);
   console.log("questionList length is: ", questionList.length);
 
-  // set list of ~10~ question
-  const sessionQuestionList = questionList.slice(0, numberOfQuestions);
+  // always set list of 10 questions to send
+  const sessionQuestionList = questionList.slice(0, 10);
 
   // check if we need more questions
   const needMoreQuestionsFlag = questionList.length <= 20;
@@ -138,17 +138,29 @@ export const createNewSessionResponse = async (
   userId: string
 ) => {
   // compare questions, return list of unanswered questions
-  let sessionResponse: NewSessionResponse = await compareQuestionLists(topic, difficulty, userId, numberOfQuestions);
+  let sessionResponse: NewSessionResponse = await compareQuestionLists(
+    topic,
+    difficulty,
+    userId,
+    numberOfQuestions
+  );
 
-  return await createNewSession(sessionResponse, userId) as NewSessionResponse;
+  return (await createNewSession(
+    sessionResponse,
+    userId
+  )) as NewSessionResponse;
 };
 
-export const createNewSession = async (sessionResponse: NewSessionResponse, userId: string) => {
+export const createNewSession = async (
+  sessionResponse: NewSessionResponse,
+  userId: string
+) => {
   // get the existing current session reference
   const currentSessionCollectionRef = collection(
     doc(collection(db, "users"), userId),
     "current_session"
   );
+
   // get the existing current session
   const currentSessionExistingSnapshot = await getDocs(
     currentSessionCollectionRef
@@ -162,10 +174,13 @@ export const createNewSession = async (sessionResponse: NewSessionResponse, user
 
   // save the existing current session to previous sessions, delete from current session
   if (currentSessionExistingSnapshot.docs.length > 0) {
-    await addDoc(
-      previousSessionsRef,
+    // add existing session to "previous_sessions"
+    await setDoc(
+      doc(previousSessionsRef, currentSessionExistingSnapshot.docs[0].id),
       currentSessionExistingSnapshot.docs[0].data()
     );
+    
+    // remove now old existing session from "current_session"
     await deleteDoc(
       doc(
         currentSessionCollectionRef,
@@ -198,25 +213,32 @@ export const getExistingCurrentSession = async (userId: string) => {
   return currentSessionExisting.docs[0].data() as Session;
 };
 
-export const getExistingPreviousSession = async (userId: string, sessionId: string) => {
+export const getExistingPreviousSession = async (
+  userId: string,
+  sessionId: string
+) => {
   // get previous session data
-  const previousSessionRef = doc(collection(
-    doc(collection(db, "users"), userId),
-    "previous_sessions"), sessionId);
+  const previousSessionRef = doc(
+    collection(doc(collection(db, "users"), userId), "previous_sessions"),
+    sessionId
+  );
 
   const previousSessionExisting = await getDoc(previousSessionRef);
   return previousSessionExisting.data() as Session;
 };
 
-export const deleteExistingPreviousSession = async (userId: string, sessionId: string) => {
+export const deleteExistingPreviousSession = async (
+  userId: string,
+  sessionId: string
+) => {
   // get previous session data
-  const previousSessionRef = doc(collection(
-    doc(collection(db, "users"), userId),
-    "previous_sessions"), sessionId);
+  const previousSessionRef = doc(
+    collection(doc(collection(db, "users"), userId), "previous_sessions"),
+    sessionId
+  );
 
-    await deleteDoc(previousSessionRef)
-}
-
+  await deleteDoc(previousSessionRef);
+};
 
 export const invokeGpt = async (
   topic: string,
