@@ -1,39 +1,22 @@
 import {
   AnswerHistory,
   NewSessionResponse,
-  Question,
   Session,
   SessionQuestion,
+  TopicSelection,
 } from "../../../types/models/models";
 import {
   collection,
   doc,
   getDocs,
-  addDoc,
   deleteDoc,
   Timestamp,
   setDoc,
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { User } from "../../../types/models/models";
 import { getQuestionDocuments } from "../../utils/questionDocs.utils";
-import { gptSendPrompt } from "../../../modules/openai";
-
-export const getUsersInfo = async () => {
-  const usersInfoRef = collection(db, "users");
-  let userList: User[] = [];
-  try {
-    const usersSnapshot = await getDocs(usersInfoRef);
-
-    usersSnapshot.forEach(doc => {
-      const userData = doc.data() as User;
-      userList.push(userData);
-    });
-    return userList;
-  } finally {
-  }
-};
+import { invokeGpt } from "../../utils/gpt.utils";
 
 const getQuestionHistory = async (userId: string) => {
   const userHistoryRef = collection(
@@ -55,36 +38,31 @@ const getQuestionHistory = async (userId: string) => {
 };
 
 export const compareQuestionLists = async (
-  topic: string,
-  difficulty: string,
-  userId: string,
-  numberOfQuestions: number
+  topic_selection: TopicSelection,
+  userId: string
 ) => {
+  const topic = topic_selection.topic.name;
+  const difficulty = topic_selection.difficulty.name
+
   // get number of questions from the db
   let allQuestions = await getQuestionDocuments(topic, difficulty);
 
+  // Check if there's enough initial questions in database,
+  // if none or less than 10 generate the difference
   if (allQuestions.length < 10) {
     const numberToGrab = 10 - allQuestions.length;
 
     console.log("\nNo questions for:", topic, difficulty);
-    // console.log('getting a quick 10 from GPT');
-    console.time("invokeGptTime"); // start the timer
-    await invokeGpt(topic, difficulty, numberToGrab);
-    console.timeEnd("invokeGptTime"); // end the timer & log the time
-    // console.log('done getting 10 from GPT\n');
+    console.log("Getting", numberToGrab, " questions from GPT");
 
+    // await invokeGpt(topic, difficulty, numberToGrab);
+
+    // grab newly created questions from database
     allQuestions = await getQuestionDocuments(topic, difficulty);
   }
 
-  console.log(topic, difficulty, "questions:", allQuestions.length);
-
   // gets questionHistory from user DB
   const userAnsweredQuestions = await getQuestionHistory(userId);
-
-  console.log("allQuestions length is:", allQuestions.length);
-  // console.log("allQuestions is:", allQuestions);
-  console.log("userAnsweredQuestions length is:", userAnsweredQuestions.length);
-  // console.log("userAnsweredQuestions is:", userAnsweredQuestions);
 
   let questionList: SessionQuestion[] = [];
 
@@ -110,14 +88,11 @@ export const compareQuestionLists = async (
     }
   });
 
-  // console.log('questionList is: ', questionList);
-  console.log("questionList length is: ", questionList.length);
-
   // always set list of 10 questions to send
   const sessionQuestionList = questionList.slice(0, 10);
 
   // check if we need more questions
-  const needMoreQuestionsFlag = questionList.length <= 20;
+  const needMoreQuestionsFlag = questionList.length < 20;
 
   // build a session object
   const sessionObject: Session = {
@@ -125,30 +100,27 @@ export const compareQuestionLists = async (
     answered_correctly: 0,
     timestamp: Timestamp.fromDate(new Date()),
     questions: sessionQuestionList,
+    topic_selection
   };
 
   return { sessionObject, needMoreQuestionsFlag };
-  // return { sessionQuestionList, needMoreQuestionsFlag, current_question: 0 };
 };
 
 export const createNewSessionResponse = async (
-  numberOfQuestions: number,
-  topic: string,
-  difficulty: string,
+  topic_selection: TopicSelection,
   userId: string
 ) => {
   // compare questions, return list of unanswered questions
   let sessionResponse: NewSessionResponse = await compareQuestionLists(
-    topic,
-    difficulty,
-    userId,
-    numberOfQuestions
+    topic_selection,
+    userId
   );
-
+  // creates session ID with createNewSession returns new create sessionID
   return (await createNewSession(
     sessionResponse,
     userId
   )) as NewSessionResponse;
+
 };
 
 export const createNewSession = async (
@@ -179,7 +151,7 @@ export const createNewSession = async (
       doc(previousSessionsRef, currentSessionExistingSnapshot.docs[0].id),
       currentSessionExistingSnapshot.docs[0].data()
     );
-    
+
     // remove now old existing session from "current_session"
     await deleteDoc(
       doc(
@@ -192,12 +164,13 @@ export const createNewSession = async (
   // grab current session document reference
   const currentSessionDocRef = doc(currentSessionCollectionRef);
 
-  // update session_id & sessionObject with results from compareQuestionLists
+  // update sessionObject with new session_id 
   sessionResponse.sessionObject.session_id = currentSessionDocRef.id;
   const currentSession = sessionResponse.sessionObject;
 
   // set the new session document in database
   await setDoc(currentSessionDocRef, currentSession);
+
 
   // return the set of questions to frontend
   return sessionResponse;
@@ -238,57 +211,4 @@ export const deleteExistingPreviousSession = async (
   );
 
   await deleteDoc(previousSessionRef);
-};
-
-export const invokeGpt = async (
-  topic: string,
-  difficulty: string,
-  numberOfQuestions: number
-) => {
-  console.log("GPT invoked!");
-  // Get list of questions under topic->difficulty as REF for GPT prompt
-  const allQuestions = await getQuestionDocuments(topic, difficulty);
-  const allQuestionsContentText: string[] = [];
-
-  // map questions text only
-  allQuestions.map(question => {
-    allQuestionsContentText.push(question.question_content.text);
-  });
-
-  // * GPT get question data!
-  // ! SETUP YOUR OWN GPT ACCOUNT AND ADD YOUR KEY TO .env AS: "OPENAI_API_KEY"
-  const result = await gptSendPrompt(
-    topic,
-    difficulty,
-    allQuestionsContentText,
-    numberOfQuestions
-  );
-
-  // grab response content and parse to JSON
-  const gptResponse = result.choices[0].message.content;
-  const gptResponseJson = JSON.parse(gptResponse || "");
-
-  await setQuestionDoc(topic, difficulty, gptResponseJson.questions);
-  console.log("GPT questions added!");
-};
-
-// * Send new questions to DB
-const setQuestionDoc = async (
-  topic: string,
-  difficulty: string,
-  questionArray: Question[]
-) => {
-  questionArray.forEach(async question => {
-    try {
-      const dataRef = doc(
-        collection(doc(collection(db, "questions"), topic), difficulty)
-      );
-
-      question.question_id = dataRef.id;
-
-      await setDoc(dataRef, question);
-    } catch (error) {
-      console.error("Error happened in setQuestionDoc", error);
-    }
-  });
 };

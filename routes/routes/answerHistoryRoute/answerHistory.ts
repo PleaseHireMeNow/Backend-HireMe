@@ -24,12 +24,18 @@ router.post("/:userid", async (req: Request, res: Response) => {
   // ! get rid of || testQuestion used for testing
   const questionData = req.body.question || testQuestion
 
+  console.log("answer is:", answer);
+  console.log("questionData is:", questionData);
+  
 
   const user = (await getMatchingUser(req.params.userid)) as User;
 
   const currentSessionDocumentSnapshot =
     await getCurrentSessionDocumentSnapshot(user.user_id);
 
+    console.log(currentSessionDocumentSnapshot.id);
+    
+  
   postAnswerHistory(
     user.user_id,
     answer,

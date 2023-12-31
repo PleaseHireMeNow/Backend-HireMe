@@ -5,9 +5,13 @@ import {
   createNewSessionResponse,
   getExistingCurrentSession as getExistingCurrentSession,
   getExistingPreviousSession,
-  invokeGpt,
 } from "./questionsRoute.methods";
-import { NewSessionResponse, Session } from "../../../types/models/models";
+import {
+  NewSessionResponse,
+  Session,
+  TopicSelection,
+} from "../../../types/models/models";
+import { invokeGpt } from "../../utils/gpt.utils";
 
 const router = express.Router();
 
@@ -15,10 +19,10 @@ router.get("/:userid/:session/", async (req, res) => {
   // get user id info from DB
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
-
+  
   // looking up the user's topic(s) and difficulty(ies)
-  const topic = user.topic_selection[0].topic.name;
-  const difficulty = user.topic_selection[0].difficulty.name;
+  const topic_selection = user.topic_selection[0];
+
 
   // check if user id exists
   if (
@@ -36,9 +40,7 @@ router.get("/:userid/:session/", async (req, res) => {
 
     if (req.params.session === "new") {
       sessionResponse = await createNewSessionResponse(
-        10,
-        topic,
-        difficulty,
+        topic_selection,
         user.user_id
       );
     } else if (req.params.session === "prev") {
@@ -49,8 +51,13 @@ router.get("/:userid/:session/", async (req, res) => {
 
     res.send(sessionResponse.sessionObject).status(200);
 
-    console.log("GPT flag is: ", sessionResponse.needMoreQuestionsFlag);
-    sessionResponse.needMoreQuestionsFlag && invokeGpt(topic, difficulty, 10);
+    // console.log("GPT flag is: ", sessionResponse.needMoreQuestionsFlag);
+    sessionResponse.needMoreQuestionsFlag &&
+      invokeGpt(
+        topic_selection.topic.name,
+        topic_selection.difficulty.name,
+        10
+      );
   }
 });
 
@@ -79,9 +86,14 @@ router.put("/:userid/:sessionid", async (req, res) => {
     // put current session in previous sessions
     // delete current session
     // put old session in current session
-    createNewSession(existingPreviousSessionResponse, user.user_id);
+    const sessionResponse = await createNewSession(
+      existingPreviousSessionResponse,
+      user.user_id
+    );
 
-    res.sendStatus(200);
+    // ? send back new Session? or is status fine
+    res.send(sessionResponse.sessionObject).status(200);
+    // res.sendStatus(200);
   }
 });
 

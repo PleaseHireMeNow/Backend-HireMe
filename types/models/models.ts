@@ -57,11 +57,12 @@ export interface Response {
 }
 
 export interface Session {
+  session_id?: string;
   current_question: number;
   answered_correctly: number;
   timestamp: Timestamp;
   questions: SessionQuestion[];
-  session_id?: string;
+  topic_selection: TopicSelection;
 }
 
 export interface SessionQuestion {
