@@ -83,10 +83,9 @@ export interface SessionQuestion {
   answer?: Answer;
 }
 
-// export interface NewSessionResponse {
-//   sessionQuestionList: Question[],
-//   needMoreQuestionsFlag: boolean,
-//   current_question: number
-// }
+export interface NewSessionResponse {
+  sessionObject: Session,
+  needMoreQuestionsFlag: boolean,
+}
 
 export type Questions = Question[];
