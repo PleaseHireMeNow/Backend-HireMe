@@ -86,5 +86,5 @@ export interface User {
     TopicSelection
   ];
   is_guest: boolean;
-  history: AnswerHistory[];
+  session_history: Session[];
 }
