@@ -42,7 +42,7 @@ export const compareQuestionLists = async (
   userId: string
 ) => {
   const topic = topic_selection.topic.name;
-  const difficulty = topic_selection.difficulty.name
+  const difficulty = topic_selection.difficulty.name;
 
   // get number of questions from the db
   let allQuestions = await getQuestionDocuments(topic, difficulty);
@@ -100,7 +100,7 @@ export const compareQuestionLists = async (
     answered_correctly: 0,
     timestamp: Timestamp.fromDate(new Date()),
     questions: sessionQuestionList,
-    topic_selection
+    topic_selection,
   };
 
   return { sessionObject, needMoreQuestionsFlag };
@@ -120,7 +120,6 @@ export const createNewSessionResponse = async (
     sessionResponse,
     userId
   )) as NewSessionResponse;
-
 };
 
 export const createNewSession = async (
@@ -164,13 +163,12 @@ export const createNewSession = async (
   // grab current session document reference
   const currentSessionDocRef = doc(currentSessionCollectionRef);
 
-  // update sessionObject with new session_id 
+  // update sessionObject with new session_id
   sessionResponse.sessionObject.session_id = currentSessionDocRef.id;
   const currentSession = sessionResponse.sessionObject;
 
   // set the new session document in database
   await setDoc(currentSessionDocRef, currentSession);
-
 
   // return the set of questions to frontend
   return sessionResponse;

@@ -61,10 +61,10 @@ router.get("/:userid/:session/", async (req, res) => {
   }
 });
 
-router.put("/:userid/:sessionid", async (req, res) => {
+router.get("/previous/:userid/:sessionid", async (req, res) => {
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
-
+  const sessionId = req.params.sessionid
   // check if user id exists
   if (
     //query the database to check if the user id is valid
@@ -75,7 +75,7 @@ router.put("/:userid/:sessionid", async (req, res) => {
     // get old session data by id
     const existingPreviousSession: Session = await getExistingPreviousSession(
       user.user_id,
-      req.params.sessionid
+      sessionId
     );
 
     const existingPreviousSessionResponse: NewSessionResponse = {
@@ -91,9 +91,8 @@ router.put("/:userid/:sessionid", async (req, res) => {
       user.user_id
     );
 
-    // ? send back new Session? or is status fine
+    // send back new Session
     res.send(sessionResponse.sessionObject).status(200);
-    // res.sendStatus(200);
   }
 });
 
