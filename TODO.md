@@ -42,9 +42,6 @@
 ✅ - do we need get or delete?
 ✅ - can this all be done in a PUT route?
 
-✅ order and clean up types
-
-✅ WHY DOES SESSION ID NOT MATCH??
 
 ✅ update user session history to grab session history instead of answer history
 
@@ -53,6 +50,14 @@
 ✅ generate 10 questions with new topic
 ✅ send back the 10
 ✅ generate 10 more
+
+
+**Misc**
+✅ order and clean up types
+✅ WHY DOES SESSION ID NOT MATCH??
+✅ Get questionData from answer History route
+  -- remove dummy data from answerHistory post calls
+
 
 
 **stretch**

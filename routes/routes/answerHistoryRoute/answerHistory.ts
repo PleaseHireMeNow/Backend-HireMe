@@ -9,16 +9,24 @@ import {
 } from "./answerHistory.methods";
 
 router.post("/:userid", async (req: Request, res: Response) => {
-  // console.log('req.params is:', req.params);
-  // ! get rid of || object used for testing
-  const answer = req.body.answer || {
+  // ! FOR TESTING
+  const testAnswer = {
     answer_content: {
       text: "A JavaScript library for building user interfaces.",
     },
     is_correct: true,
   };
+  const testQuestion = question[0];
+
+  // ! get rid of || testAnswer used for testing
+  const answer = req.body.answer || testAnswer
+
+  // ! get rid of || testQuestion used for testing
+  const questionData = req.body.question || testQuestion
+
+
   const user = (await getMatchingUser(req.params.userid)) as User;
-  const questionData = question[0];
+
   const currentSessionDocumentSnapshot =
     await getCurrentSessionDocumentSnapshot(user.user_id);
 

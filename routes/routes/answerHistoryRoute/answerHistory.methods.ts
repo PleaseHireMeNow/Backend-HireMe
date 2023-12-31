@@ -25,7 +25,9 @@ export const postAnswerHistory = async (
       collection(doc(collection(db, "users"), userId), "history"),
       question.question_id
     );
-    const userHistory = await getDoc(userHistoryRef)
+
+    const userHistory = await getDoc(userHistoryRef);
+
     let userHistoryData = {
       question_id: question.question_id,
       question_content: question.question_content,
