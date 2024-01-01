@@ -15,7 +15,7 @@ import { invokeGpt } from "../../utils/gpt.utils";
 
 const router = express.Router();
 
-router.get("/:userid/:session/", async (req, res) => {
+router.get("/current/:session/:userid/", async (req, res) => {
   // get user id info from DB
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
@@ -43,7 +43,7 @@ router.get("/:userid/:session/", async (req, res) => {
         topic_selection,
         user.user_id
       );
-    } else if (req.params.session === "prev") {
+    } else if (req.params.session === "current") {
       sessionResponse.sessionObject = await getExistingCurrentSession(
         user.user_id
       );
