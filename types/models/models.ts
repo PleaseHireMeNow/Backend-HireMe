@@ -1,12 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
-export interface AnswerContent {
-  text: string;
-}
-
 export interface Answer {
   answer_content: AnswerContent;
   is_correct: boolean;
+}
+export interface AnswerContent {
+  text: string;
 }
 
 export interface AnswerHistory {
@@ -14,15 +13,40 @@ export interface AnswerHistory {
   question_content: QuestionContent;
   answered_correctly: number;
   answered_incorrectly: number;
-  responses: [
-    {
-      timestamp: Timestamp;
-      response: {
-        answer: Answer;
-      };
-      session_id: string;
-    }
+  answers: [
+    AnswerHistoryResponse
   ];
+}
+
+export interface AnswerHistoryResponse {
+  timestamp: Timestamp,
+  answer: Answer,
+  session_id: string
+}
+
+export interface CompletedQuestion extends Question {
+  responses: Response[];
+}
+
+export interface Difficulty {
+  name: string;
+  iconPath: string;
+}
+
+export interface NewSessionResponse {
+  sessionObject: Session,
+  needMoreQuestionsFlag: boolean,
+}
+
+export interface Question {
+  question_id: string;
+  question_content: QuestionContent;
+  rating: number;
+}
+
+export interface QuestionContent {
+  text: string;
+  answers: Answer[];
 }
 
 export interface Response {
@@ -32,50 +56,13 @@ export interface Response {
   isCorrect: boolean;
 }
 
-export interface QuestionContent {
-  text: string;
-  answers: Answer[];
-}
-
-export interface Question {
-  question_id: string;
-  question_content: QuestionContent;
-  rating: number;
-}
-
-export interface CompletedQuestion extends Question {
-  responses: Response[];
-}
-
-export interface User {
-  user_id: string;
-  username: string;
-  topic_selection: [
-    {
-      topic: Topic;
-      difficulty: Difficulty;
-    }
-  ];
-  is_guest: boolean;
-  history: AnswerHistory[];
-}
-
-export interface Topic {
-  name: string;
-  iconPath: string;
-}
-
-export interface Difficulty {
-  name: string;
-  iconPath: string;
-}
-
 export interface Session {
+  session_id?: string;
   current_question: number;
   answered_correctly: number;
   timestamp: Timestamp;
   questions: SessionQuestion[];
-  session_id?: string;
+  topic_selection: TopicSelection;
 }
 
 export interface SessionQuestion {
@@ -83,10 +70,22 @@ export interface SessionQuestion {
   answer?: Answer;
 }
 
-// export interface NewSessionResponse {
-//   sessionQuestionList: Question[],
-//   needMoreQuestionsFlag: boolean,
-//   current_question: number
-// }
+export interface Topic {
+  name: string;
+  iconPath: string;
+}
 
-export type Questions = Question[];
+export interface TopicSelection {
+  topic: Topic,
+  difficulty: Difficulty
+}
+
+export interface User {
+  user_id: string;
+  username: string;
+  topic_selection: [
+    TopicSelection
+  ];
+  is_guest: boolean;
+  session_history: Session[];
+}
