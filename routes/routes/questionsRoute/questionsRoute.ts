@@ -83,6 +83,15 @@ router.get("/previous/:userid/:sessionid", async (req, res) => {
       needMoreQuestionsFlag: false,
     };
 
+    // if session has already been completed and the user wants to revisit it
+    const previousSessionQuestionCount = existingPreviousSessionResponse.sessionObject.questions.length;
+    const previousSessionCurrentQuestion = existingPreviousSessionResponse.sessionObject.current_question;
+    // compare the question count and the current question
+    if (previousSessionQuestionCount ===  previousSessionCurrentQuestion) {
+      // reset the current question to 0
+      existingPreviousSessionResponse.sessionObject.current_question = 0;
+    }
+
     // put current session in previous sessions
     // delete current session
     // put old session in current session
