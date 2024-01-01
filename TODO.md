@@ -56,9 +56,9 @@
 ✅ order and clean up types
 ✅ WHY DOES SESSION ID NOT MATCH??
 ✅ Get questionData from answer History route
-  -- remove dummy data from answerHistory post calls
+✅  -- remove dummy data from answerHistory post calls
 
-update questionsRoutes to be 3 get routes
+✅ update questionsRoutes to be 2 get routes
 
 
 **stretch**
@@ -69,3 +69,5 @@ registration route
 login route
 log out route
 
+**Error handling**
+How does the server respond if the data it gets from the database is not the right shape?

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import question from "../../../testing/db/question.json";
-import { User } from "../../../types/models/models";
+import { Answer, User } from "../../../types/models/models";
 import { getMatchingUser } from "../../utils/users.utils";
 import {
   getCurrentSessionDocumentSnapshot,
@@ -9,33 +9,15 @@ import {
 } from "./answerHistory.methods";
 
 router.post("/:userid", async (req: Request, res: Response) => {
-  // ! FOR TESTING
-  const testAnswer = {
-    answer_content: {
-      text: "A JavaScript library for building user interfaces.",
-    },
-    is_correct: true,
-  };
-  const testQuestion = question[0];
-
-  // ! get rid of || testAnswer used for testing
-  const answer = req.body.answer || testAnswer
-
-  // ! get rid of || testQuestion used for testing
-  const questionData = req.body.question || testQuestion
-
-  console.log("answer is:", answer);
-  console.log("questionData is:", questionData);
-  
-
+  const answer = req.body.answer;
+  const questionData = req.body.question;
+  // Get user information from database
   const user = (await getMatchingUser(req.params.userid)) as User;
-
+  // Get user's session information from database
   const currentSessionDocumentSnapshot =
     await getCurrentSessionDocumentSnapshot(user.user_id);
 
-    console.log(currentSessionDocumentSnapshot.id);
-    
-  
+  // Post the answer to the current session and the user's history.
   postAnswerHistory(
     user.user_id,
     answer,
