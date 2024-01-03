@@ -22,7 +22,7 @@ router.get("/current/:session/:userid/", async (req, res) => {
   
   // looking up the user's topic(s) and difficulty(ies)
   const topic_selection = user.topic_selection[0];
-
+  const numberOfQuestions = 10
 
   // check if user id exists
   if (
@@ -41,7 +41,8 @@ router.get("/current/:session/:userid/", async (req, res) => {
     if (req.params.session === "new") {
       sessionResponse = await createNewSessionResponse(
         topic_selection,
-        user.user_id
+        user.user_id,
+        numberOfQuestions
       );
     } else if (req.params.session === "current") {
       sessionResponse.sessionObject = await getExistingCurrentSession(

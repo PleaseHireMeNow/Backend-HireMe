@@ -39,7 +39,8 @@ const getQuestionHistory = async (userId: string) => {
 
 export const compareQuestionLists = async (
   topic_selection: TopicSelection,
-  userId: string
+  userId: string,
+  numberOfQuestions: number
 ) => {
   const topic = topic_selection.topic.name;
   const difficulty = topic_selection.difficulty.name;
@@ -89,7 +90,7 @@ export const compareQuestionLists = async (
   });
 
   // always set list of 10 questions to send
-  const sessionQuestionList = questionList.slice(0, 10);
+  const sessionQuestionList = questionList.slice(0, numberOfQuestions);
 
   // check if we need more questions
   const needMoreQuestionsFlag = questionList.length < 20;
@@ -108,12 +109,14 @@ export const compareQuestionLists = async (
 
 export const createNewSessionResponse = async (
   topic_selection: TopicSelection,
-  userId: string
+  userId: string,
+  numberOfQuestions: number
 ) => {
   // compare questions, return list of unanswered questions
   let sessionResponse: NewSessionResponse = await compareQuestionLists(
     topic_selection,
-    userId
+    userId,
+    numberOfQuestions
   );
   // creates session ID with createNewSession returns new create sessionID
   return (await createNewSession(
