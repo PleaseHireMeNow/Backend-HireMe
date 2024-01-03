@@ -50,11 +50,11 @@ export const compareQuestionLists = async (
 
   // Check if there's enough initial questions in database,
   // if none or less than 10 generate the difference
-  if (allQuestions.length < 10) {
-    const numberToGrab = 10 - allQuestions.length;
+  if (allQuestions.length < numberOfQuestions) {
+    const numberToGrab = numberOfQuestions - allQuestions.length;
 
-    console.log("\nNo questions for:", topic, difficulty);
-    console.log("Getting", numberToGrab, " questions from GPT");
+    console.log("\nNot enough questions for session:", topic, difficulty);
+    console.log("Need to get", numberToGrab, " questions from GPT");
 
     // await invokeGpt(topic, difficulty, numberToGrab);
 
@@ -88,6 +88,18 @@ export const compareQuestionLists = async (
       questionList.push({ question });
     }
   });
+
+  // if (questionList.length < numberOfQuestions) {
+  //   const numberToGrab = numberOfQuestions - questionList.length;
+
+  //   console.log("\nNot enough questions for session:", topic, difficulty);
+  //   console.log("Need to get", numberToGrab, " questions from GPT");
+    
+
+  //   // grab newly created questions from database
+  //   allQuestions = await getQuestionDocuments(topic, difficulty);
+  //   // ! rerun sort
+  // }
 
   // always set list of 10 questions to send
   const sessionQuestionList = questionList.slice(0, numberOfQuestions);

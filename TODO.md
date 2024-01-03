@@ -60,7 +60,19 @@
 ✅ update questionsRoutes to be 2 get routes
 
 **Post presentation fixes**
-update session history to return reverse chronological order
+Session History updates
+update session history to return reverse chronological order (most recent at top)
+-- the list is ordered by ids, need to sort the list first
+current session is not included in history - merge when grabbing session history
+-- place at top front of list
+
+Variable Session data
+add ability for frontend to select a variable amount of questions
+-- add logic for GPT to handle this
+if the available questions is less than the requested amount - generate the difference
+
+
+
 
 
 **stretch**

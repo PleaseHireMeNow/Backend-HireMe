@@ -20,9 +20,13 @@ router.get("/current/:session/:userid/", async (req, res) => {
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
   
+  // ! eventually grab from frontend variable session number
+  // const numberOfQuestions = req.body.numberOfQuestions
+  const numberOfQuestions = 10
+  
   // looking up the user's topic(s) and difficulty(ies)
   const topic_selection = user.topic_selection[0];
-  const numberOfQuestions = 10
+  
 
   // check if user id exists
   if (
