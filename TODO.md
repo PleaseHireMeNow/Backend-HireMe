@@ -57,8 +57,10 @@
 ✅ WHY DOES SESSION ID NOT MATCH??
 ✅ Get questionData from answer History route
 ✅  -- remove dummy data from answerHistory post calls
-
 ✅ update questionsRoutes to be 2 get routes
+
+**Post presentation fixes**
+update session history to return reverse chronological order
 
 
 **stretch**
