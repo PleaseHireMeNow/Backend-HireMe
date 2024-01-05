@@ -71,6 +71,7 @@ add ability for frontend to select a variable amount of questions
 -- add logic for GPT to handle this
 if the available questions is less than the requested amount - generate the difference
 
+time taken to complete session??
 
 
 
