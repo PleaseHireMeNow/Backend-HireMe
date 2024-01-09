@@ -59,30 +59,3 @@
 ✅  -- remove dummy data from answerHistory post calls
 ✅ update questionsRoutes to be 2 get routes
 
-**Post presentation fixes**
-Session History updates
-update session history to return reverse chronological order (most recent at top)
--- the list is ordered by ids, need to sort the list first
-current session is not included in history - merge when grabbing session history
--- place at top front of list
-
-Variable Session data
-add ability for frontend to select a variable amount of questions
--- add logic for GPT to handle this
-if the available questions is less than the requested amount - generate the difference
-
-time taken to complete session??
-
-
-
-
-**stretch**
-ability for user to redo a previous session
-
-**USER AUTH FLOW**
-registration route
-login route
-log out route
-
-**Error handling**
-How does the server respond if the data it gets from the database is not the right shape?
