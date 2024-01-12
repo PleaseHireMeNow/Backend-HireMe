@@ -1,4 +1,4 @@
-import { Question } from "../../types/models/Questions";
+import { Question } from "../../types/models/models";
 import { collection, doc, getDocs } from "firebase/firestore";
 import { db } from "../../modules/db";
 

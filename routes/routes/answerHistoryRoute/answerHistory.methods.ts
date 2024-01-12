@@ -3,7 +3,7 @@ import {
   AnswerHistory,
   Question,
   Session,
-} from "../../../types/models/Questions";
+} from "../../../types/models/models";
 import {
   collection,
   doc,
@@ -25,29 +25,27 @@ export const postAnswerHistory = async (
       collection(doc(collection(db, "users"), userId), "history"),
       question.question_id
     );
+
     const userHistory = await getDoc(userHistoryRef);
+
     let userHistoryData = {
       question_id: question.question_id,
       question_content: question.question_content,
       answered_correctly: 0,
       answered_incorrectly: 0,
-      responses: [
+      answers: [
         {
           timestamp: Timestamp.fromDate(new Date()),
-          response: {
-            answer: answer,
-          },
+          answer,
           session_id,
         },
       ],
-    };
+    } as AnswerHistory;
     if (userHistory.data() !== undefined) {
       userHistoryData = userHistory.data() as AnswerHistory;
-      userHistoryData.responses.push({
+      userHistoryData.answers.push({
         timestamp: Timestamp.fromDate(new Date()),
-        response: {
-          answer: answer,
-        },
+        answer,
         session_id,
       });
     }

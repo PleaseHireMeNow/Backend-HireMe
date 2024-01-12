@@ -38,17 +38,24 @@
 
 **Topics**
 ✅ add get topics route
-update user topic selection
-- do we need get or delete?
-- can this all be done in a PUT route?
+✅ update user topic selection
+✅ - do we need get or delete?
+✅ - can this all be done in a PUT route?
 
-update user topic and difficulty selection
-order and clean up types
 
-**stretch**
-ability for user to redo a previous session
+✅ update user session history to grab session history instead of answer history
 
-**USER AUTH FLOW**
-registration route
-login route
-log out route
+**generating new question topics**
+✅ if there are no questions (allQuestions = 0 OR less than 30)
+✅ generate 10 questions with new topic
+✅ send back the 10
+✅ generate 10 more
+
+
+**Misc**
+✅ order and clean up types
+✅ WHY DOES SESSION ID NOT MATCH??
+✅ Get questionData from answer History route
+✅  -- remove dummy data from answerHistory post calls
+✅ update questionsRoutes to be 2 get routes
+

@@ -1,5 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
-import { User } from "../../types/models/Questions";
+import { User } from "../../types/models/models";
 import { db } from "../../modules/db";
 
 export const getUsersInfo = async () => {

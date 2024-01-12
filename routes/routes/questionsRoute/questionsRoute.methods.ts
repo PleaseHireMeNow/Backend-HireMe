@@ -1,37 +1,22 @@
 import {
   AnswerHistory,
-  Question,
+  NewSessionResponse,
   Session,
   SessionQuestion,
-} from "../../../types/models/Questions";
+  TopicSelection,
+} from "../../../types/models/models";
 import {
   collection,
   doc,
   getDocs,
-  addDoc,
   deleteDoc,
   Timestamp,
   setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../../modules/db";
-import { User } from "../../../types/models/Questions";
 import { getQuestionDocuments } from "../../utils/questionDocs.utils";
-import { gptSendPrompt } from "../../../modules/openai";
-
-export const getUsersInfo = async () => {
-  const usersInfoRef = collection(db, "users");
-  let userList: User[] = [];
-  try {
-    const usersSnapshot = await getDocs(usersInfoRef);
-
-    usersSnapshot.forEach(doc => {
-      const userData = doc.data() as User;
-      userList.push(userData);
-    });
-    return userList;
-  } finally {
-  }
-};
+import { invokeGpt } from "../../utils/gpt.utils";
 
 const getQuestionHistory = async (userId: string) => {
   const userHistoryRef = collection(
@@ -53,47 +38,70 @@ const getQuestionHistory = async (userId: string) => {
 };
 
 export const compareQuestionLists = async (
-  topic: string,
-  difficulty: string,
+  topic_selection: TopicSelection,
   userId: string,
   numberOfQuestions: number
 ) => {
+  const topic = topic_selection.topic.name;
+  const difficulty = topic_selection.difficulty.name;
+
   // get number of questions from the db
-  const allQuestions = await getQuestionDocuments(topic, difficulty);
+  let allQuestions = await getQuestionDocuments(topic, difficulty);
+
+  // Check if there's enough initial questions in database,
+  // if none or less than 10 generate the difference
+  if (allQuestions.length < numberOfQuestions) {
+    const numberToGrab = numberOfQuestions - allQuestions.length;
+
+    console.log("\nNot enough questions for session:", topic, difficulty);
+    console.log("Need to get", numberToGrab, " questions from GPT");
+
+    // await invokeGpt(topic, difficulty, numberToGrab);
+
+    // grab newly created questions from database
+    allQuestions = await getQuestionDocuments(topic, difficulty);
+  }
 
   // gets questionHistory from user DB
   const userAnsweredQuestions = await getQuestionHistory(userId);
-
-  console.log("allQuestions length is:", allQuestions.length);
-  console.log("userAnsweredQuestions length is:", userAnsweredQuestions.length);
 
   let questionList: SessionQuestion[] = [];
 
   // compare questions and find 10 new questions from list of allQuestions
   allQuestions.forEach(question => {
+    // If answer_history exists compare, else add all questions to list
     if (
       userAnsweredQuestions.some(historyQuestion => {
-        // console.log("historyQuestion is: ", historyQuestion);
         const matchingQuestionId =
           question.question_id !== historyQuestion.question_id;
         const moreWrong =
           historyQuestion.answered_incorrectly >=
           historyQuestion.answered_correctly;
 
-        // console.log(matchingQuestionId, moreWrong);
-
         return matchingQuestionId || moreWrong;
       })
     ) {
-      // console.log("it works!");
+      // this runs if there is AT LEAST 1 item in the answer history
+      questionList.push({ question });
+    } else {
+      // this only runs if there is NOTHING in the answer history
       questionList.push({ question });
     }
   });
 
-  // console.log('questionList is: ', questionList);
-  console.log("questionList length is: ", questionList.length);
+  // if (questionList.length < numberOfQuestions) {
+  //   const numberToGrab = numberOfQuestions - questionList.length;
 
-  // set list of ~10~ question
+  //   console.log("\nNot enough questions for session:", topic, difficulty);
+  //   console.log("Need to get", numberToGrab, " questions from GPT");
+    
+
+  //   // grab newly created questions from database
+  //   allQuestions = await getQuestionDocuments(topic, difficulty);
+  //   // ! rerun sort
+  // }
+
+  // always set list of 10 questions to send
   const sessionQuestionList = questionList.slice(0, numberOfQuestions);
 
   // check if we need more questions
@@ -105,44 +113,60 @@ export const compareQuestionLists = async (
     answered_correctly: 0,
     timestamp: Timestamp.fromDate(new Date()),
     questions: sessionQuestionList,
+    topic_selection,
   };
 
   return { sessionObject, needMoreQuestionsFlag };
-  // return { sessionQuestionList, needMoreQuestionsFlag, current_question: 0 };
+};
+
+export const createNewSessionResponse = async (
+  topic_selection: TopicSelection,
+  userId: string,
+  numberOfQuestions: number
+) => {
+  // compare questions, return list of unanswered questions
+  let sessionResponse: NewSessionResponse = await compareQuestionLists(
+    topic_selection,
+    userId,
+    numberOfQuestions
+  );
+  // creates session ID with createNewSession returns new create sessionID
+  return (await createNewSession(
+    sessionResponse,
+    userId
+  )) as NewSessionResponse;
 };
 
 export const createNewSession = async (
-  numberOfQuestions: number,
-  topic: string,
-  difficulty: string,
+  sessionResponse: NewSessionResponse,
   userId: string
 ) => {
-  // compare questions, return list of unanswered questions
-  let sessionResponse: {
-    sessionObject: Session;
-    needMoreQuestionsFlag: boolean;
-  } = await compareQuestionLists(topic, difficulty, userId, numberOfQuestions);
-
-  // get the existing current session
+  // get the existing current session reference
   const currentSessionCollectionRef = collection(
     doc(collection(db, "users"), userId),
     "current_session"
   );
 
+  // get the existing current session
   const currentSessionExistingSnapshot = await getDocs(
     currentSessionCollectionRef
   );
-  // save the existing current session to previous sessions
+
+  // get the previous session reference
   const previousSessionsRef = collection(
     doc(collection(db, "users"), userId),
     "previous_sessions"
   );
-  // send the questions to the database
+
+  // save the existing current session to previous sessions, delete from current session
   if (currentSessionExistingSnapshot.docs.length > 0) {
-    await addDoc(
-      previousSessionsRef,
+    // add existing session to "previous_sessions"
+    await setDoc(
+      doc(previousSessionsRef, currentSessionExistingSnapshot.docs[0].id),
       currentSessionExistingSnapshot.docs[0].data()
     );
+
+    // remove now old existing session from "current_session"
     await deleteDoc(
       doc(
         currentSessionCollectionRef,
@@ -151,18 +175,21 @@ export const createNewSession = async (
     );
   }
 
+  // grab current session document reference
   const currentSessionDocRef = doc(currentSessionCollectionRef);
-  // console.log(currentSessionDocRef.id);
 
+  // update sessionObject with new session_id
   sessionResponse.sessionObject.session_id = currentSessionDocRef.id;
   const currentSession = sessionResponse.sessionObject;
 
+  // set the new session document in database
   await setDoc(currentSessionDocRef, currentSession);
-  // return the set of questions
+
+  // return the set of questions to frontend
   return sessionResponse;
 };
 
-export const getExistingSession = async (userId: string) => {
+export const getExistingCurrentSession = async (userId: string) => {
   // get existing session data
   const currentSessionRef = collection(
     doc(collection(db, "users"), userId),
@@ -172,51 +199,29 @@ export const getExistingSession = async (userId: string) => {
   return currentSessionExisting.docs[0].data() as Session;
 };
 
-export const invokeGpt = async (topic: string, difficulty: string) => {
-  console.log("GPT invoked!");
-  // Get list of questions under topic->difficulty as REF for GPT prompt
-  const allQuestions = await getQuestionDocuments(topic, difficulty);
-  const allQuestionsContentText: string[] = [];
-
-  // map questions text only
-  allQuestions.map(question => {
-    allQuestionsContentText.push(question.question_content.text);
-  });
-
-  // * GPT get question data!
-  // ! SETUP YOUR OWN GPT ACCOUNT AND ADD YOUR KEY TO .env AS: "OPENAI_API_KEY"
-  const result = await gptSendPrompt(
-    topic,
-    difficulty,
-    allQuestionsContentText,
-    10
+export const getExistingPreviousSession = async (
+  userId: string,
+  sessionId: string
+) => {
+  // get previous session data
+  const previousSessionRef = doc(
+    collection(doc(collection(db, "users"), userId), "previous_sessions"),
+    sessionId
   );
 
-  // grab response content and parse to JSON
-  const gptResponse = result.choices[0].message.content;
-  const gptResponseJson = JSON.parse(gptResponse || "");
-
-  await setQuestionDoc(topic, difficulty, gptResponseJson.questions);
-  console.log("GPT questions added!");
+  const previousSessionExisting = await getDoc(previousSessionRef);
+  return previousSessionExisting.data() as Session;
 };
 
-// * Send new questions to DB
-const setQuestionDoc = async (
-  topic: string,
-  difficulty: string,
-  questionArray: Question[]
+export const deleteExistingPreviousSession = async (
+  userId: string,
+  sessionId: string
 ) => {
-  questionArray.forEach(async question => {
-    try {
-      const dataRef = doc(
-        collection(doc(collection(db, "questions"), topic), difficulty)
-      );
+  // get previous session data
+  const previousSessionRef = doc(
+    collection(doc(collection(db, "users"), userId), "previous_sessions"),
+    sessionId
+  );
 
-      question.question_id = dataRef.id;
-
-      await setDoc(dataRef, question);
-    } catch (error) {
-      console.error("Error happened in setQuestionDoc", error);
-    }
-  });
+  await deleteDoc(previousSessionRef);
 };
