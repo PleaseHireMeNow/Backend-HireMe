@@ -56,16 +56,6 @@
 ✅ order and clean up types
 ✅ WHY DOES SESSION ID NOT MATCH??
 ✅ Get questionData from answer History route
-  -- remove dummy data from answerHistory post calls
-
-update questionsRoutes to be 3 get routes
-
-
-**stretch**
-ability for user to redo a previous session
-
-**USER AUTH FLOW**
-registration route
-login route
-log out route
+✅  -- remove dummy data from answerHistory post calls
+✅ update questionsRoutes to be 2 get routes
 

@@ -20,9 +20,13 @@ router.get("/current/:session/:userid/", async (req, res) => {
   const userId = req.params.userid;
   const user = await getMatchingUser(userId);
   
+  // ! eventually grab from frontend variable session number
+  // const numberOfQuestions = req.body.numberOfQuestions
+  const numberOfQuestions = 10
+  
   // looking up the user's topic(s) and difficulty(ies)
   const topic_selection = user.topic_selection[0];
-
+  
 
   // check if user id exists
   if (
@@ -41,7 +45,8 @@ router.get("/current/:session/:userid/", async (req, res) => {
     if (req.params.session === "new") {
       sessionResponse = await createNewSessionResponse(
         topic_selection,
-        user.user_id
+        user.user_id,
+        numberOfQuestions
       );
     } else if (req.params.session === "current") {
       sessionResponse.sessionObject = await getExistingCurrentSession(
@@ -82,6 +87,15 @@ router.get("/previous/:userid/:sessionid", async (req, res) => {
       sessionObject: existingPreviousSession,
       needMoreQuestionsFlag: false,
     };
+
+    // if session has already been completed and the user wants to revisit it
+    const previousSessionQuestionCount = existingPreviousSessionResponse.sessionObject.questions.length;
+    const previousSessionCurrentQuestion = existingPreviousSessionResponse.sessionObject.current_question;
+    // compare the question count and the current question
+    if (previousSessionQuestionCount ===  previousSessionCurrentQuestion) {
+      // reset the current question to 0
+      existingPreviousSessionResponse.sessionObject.current_question = 0;
+    }
 
     // put current session in previous sessions
     // delete current session
