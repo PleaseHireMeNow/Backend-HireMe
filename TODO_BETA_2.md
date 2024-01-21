@@ -55,6 +55,7 @@ What stats should we keep track of?
 How does the server respond if the data it gets from the database is not the right shape?
 How do we handle sending the front end errors with getting data or if an AI request is bad or crashes (IE rate limit, bad API key, etc )
 
+Buiness logic - tell frontend that a user needs to input API key to create new material
 
 ## Documentation
 - [ ] setting up backend on you're own computer
@@ -65,9 +66,25 @@ How do we handle sending the front end errors with getting data or if an AI requ
 - frontend documentation 
 - anything else?
 
+## Number of questions
+- [ ] limit number of questions 10 
+- [ ] make number of questions route optional in route
+
+## question route
+- [ ] check for bugs question route line 91, previous Session QuestionCount 
+
 
 ## Deployment
 - Launch this puppy!
+
+
+
+
+
+
+
+
+
 
 
 <br>
