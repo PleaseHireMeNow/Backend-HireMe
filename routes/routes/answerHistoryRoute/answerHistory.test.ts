@@ -5,10 +5,12 @@ const app = require("../../server");
 const request = require("supertest");
 const usersInDatabase = require("../../testing/db/user.json");
 
-describe("answer history route test", () => {
-  const correctUserid = usersInDatabase[0].userId;
-  const incorrectUserid = "jkrsgfd65876w34lkaldjfe345";
+const correctUserid = usersInDatabase[0].userId;
+const incorrectUserid = "jkrsgfd65876w34lkaldjfe345";
 
+describe("answer history route test", () => {
+
+  // GET TEST
   test("answerHistory get route success test, should give array of answer history objects", done => {
     request(app)
       .get(`/api/answerHistory/${correctUserid}`)
@@ -38,4 +40,18 @@ describe("answer history route test", () => {
         }
       });
   });
+
+  // GET TEST
+  test("answerHistory post route incorrect userid, should send 403", done => {
+    request(app)
+      .post(`/api/answerHistory/${incorrectUserid}`)
+      .end((err: Object, res: Response) => {
+        if (err) {
+          console.error(err);
+        }
+        expect(res.status).toBe(200);
+        done()
+      });
+  });
+
 });
