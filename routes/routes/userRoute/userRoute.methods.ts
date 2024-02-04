@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../../modules/db";
 import { Session } from "../../../types/models/models";
 
@@ -11,22 +11,16 @@ export const getUserDocument = async (userId: string) => {
     "previous_sessions"
   );
 
-  const previousSessionsQuerySnapshot = await getDocs(previousSessionsRef);
+  // grab session history and sort by date
+  const previousSessionsQuerySnapshot = await getDocs(query(previousSessionsRef, orderBy('timestamp', "desc")) );
   let session_history: Session[] = [];
 
-  
-  // ? updated logic will only try to grab previous sessions if they exist!
-  // ? curious if the if statement is relevant here? if there's nothing in docs, nothing happens 🤷🏻‍♂️
-  if (previousSessionsQuerySnapshot.docs[0] !== undefined) {
     previousSessionsQuerySnapshot.forEach(doc => {
       const sessionData = doc.data() as Session;
       session_history.push(sessionData);
     });
-
-    // ! want to test reversing - how is the array returning by default?
-    // session_history.reverse()
-  }
-
+  
+    
     const currentSessionRef = collection(
       doc(collection(db, "users"), userId),
       "current_session"
