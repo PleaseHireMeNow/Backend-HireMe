@@ -14,6 +14,30 @@ router.get("/:userid", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/", (req: Request, res: Response) => {
+  //receive oauth token
+  const oAuthToken = req.body.idToken;
+  const redirectUri = req.body.redirectUri;
+  console.log("oAuthToken", oAuthToken, "redirectUri", redirectUri)
+  // //token validation
+  // tokenValidationMethodFail() && res.send(400)
+  // //token validation flow with google
+  const oAuthResults = tokenValidationWithGoogle(oAuthToken, redirectUri);
+  console.log("oAuthResults", oAuthResults)
+  // //get user from database
+  // const databaseUser = getUserFromDatabase(oAuthResults.idToken)
+  // //update user in database
+  // updateUserInDatabase(databaseUser, oAuthResults.user)
+  // //send response
+  // res.send(200);  
+  
+  // if (userJson[0].user_id === req.params.userid) {
+  //   res.sendStatus(200);
+  // } else {
+  //   res.sendStatus(403);
+  // }
+});
+
 router.delete("/:userid", (req: Request, res: Response) => {
   if (userJson[0].user_id === req.params.userid) {
     res.sendStatus(200);
