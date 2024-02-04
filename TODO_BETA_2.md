@@ -3,13 +3,13 @@
 ## Misc fixes
 ### Session History updates
 
-- [ ] update session history to return reverse chronological order (most recent at top)
-- [ ] the list is ordered by ids, need to sort the list first
-- [ ] current session is not included in history - merge when grabbing session history
+- [x] update session history to return reverse chronological order (most recent at top)
+- [x] the list is ordered by ids, need to sort the list first
+- [?] current session is not included in history - merge when grabbing session history
   - place current session at top front of list
   - if clicking current session in history should it restart or continue where left off? (frontend problem?)
     - if so, could frontend just place this at the top anyway from user data 
-    and use the same logic as their "continue session"? 
+    and use the same logic as their "continue session"?  
 
 
 ### Previous Sessions
@@ -29,6 +29,8 @@ What stats should we keep track of?
 - [ ] come up with OAuth task list
 ### Registration
 ### Login
+- [ ] create revoke token route
+
 ### Log Out
 
 ### Route Logic
