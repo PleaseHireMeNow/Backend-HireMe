@@ -21,7 +21,13 @@ How do we deliver stats to frontend? or does frontend calculate that once they r
 
 What stats should we keep track of?
 
+## Security Rules
+we need to update security rules for firestore
+- [ ] allow any user to read question data
+- [ ] allow authorized user to access their own user data if matched
+ documentation: https://firebase.google.com/docs/firestore/security/get-started#auth-required
 
+https://firebase.google.com/docs/firestore/security/insecure-rules
 
 
 
