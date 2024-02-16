@@ -16,5 +16,15 @@ import { getFirestore } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore();
+const db = getFirestore();
 
+import * as admin from "firebase-admin"
+
+import serviceAccount from "../serviceAccount.json";
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+// ! eventuall want to move all routes over to admin instead of db 🙃
+export {admin, db};
