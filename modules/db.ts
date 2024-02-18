@@ -1,7 +1,12 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import * as admin from "firebase-admin";
+import serviceAccount from "../serviceAccount.json";
+import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+
 dotenv.config();
 
-
+// ! this is meant for frontend, delete when routes are updated
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -12,19 +17,13 @@ const firebaseConfig = {
   measurmentId: process.env.FIREBASE_MEASURMENTID,
 };
 
-import { getFirestore } from "firebase/firestore";
-import { initializeApp } from 'firebase/app'
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
-import * as admin from "firebase-admin"
-
-import serviceAccount from "../serviceAccount.json";
-
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
-// ! eventuall want to move all routes over to admin instead of db 🙃
-export {admin, db};
+// ! eventually want to move all routes over to admin instead of db 🙃
+export { admin, db };
