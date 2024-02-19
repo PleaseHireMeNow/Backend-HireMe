@@ -25,5 +25,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
+const dbv2 = admin.firestore(); 
 // ! eventually want to move all routes over to admin instead of db 🙃
-export { admin, db };
+export { admin, db, dbv2 };
