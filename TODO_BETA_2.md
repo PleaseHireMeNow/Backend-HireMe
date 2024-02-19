@@ -17,22 +17,19 @@
 
 ### Stats
 
-How do we deliver stats to frontend? or does frontend calculate that once they receive the data?
+How do we deliver statgs to frontend? or does frontend calculate that once they receive the data?
 
 What stats should we keep track of?
 
-## Security Rules
-we need to update security rules for firestore
-- [ ] allow any user to read question data
-- [ ] allow authorized user to access their own user data if matched
- documentation: https://firebase.google.com/docs/firestore/security/get-started#auth-required
 
-https://firebase.google.com/docs/firestore/security/insecure-rules
 
 
 
 ## OAuth
 - [ ] come up with OAuth task list
+- [ ] add hireme email to Firebase
+
+
 ### Registration
 ### Login
 - [ ] create revoke token route
@@ -84,15 +81,6 @@ Buiness logic - tell frontend that a user needs to input API key to create new m
 
 ## Deployment
 - Launch this puppy!
-
-
-
-
-
-
-
-
-
 
 
 <br>
