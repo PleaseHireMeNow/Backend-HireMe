@@ -35,7 +35,7 @@ router.get("/", validateUser, async (req, res) => {
   // ! Testing Admin SDK for the syntax below, returns user document
   // const questionData = await TestAdminSDKGetQuestions(req.user.uid);
 
-  res.send(userData).status(200);
+  res.send(userData.data()).status(200);
 });
 
 export default router;
