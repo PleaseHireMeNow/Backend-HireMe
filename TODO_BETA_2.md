@@ -10,7 +10,9 @@
   - if clicking current session in history should it restart or continue where left off? (frontend problem?)
     - if so, could frontend just place this at the top anyway from user data 
     and use the same logic as their "continue session"?  
-
+- [ ] Add declare global to models.ts to clean up type imports from routes
+- [ ] update user type for imports from database
+  -- thinking things like "userSnapshot" in registerRoute should have a more specific type
 
 ### Previous Sessions
 - [ ] confirm grabbing a previous session works on front end & test for any bugs
