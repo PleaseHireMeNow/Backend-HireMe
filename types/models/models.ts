@@ -1,5 +1,18 @@
 import { Timestamp } from "firebase/firestore";
+import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
 
+// extend "Request" type to include user as DecodedItToken
+// global, no export needed
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: DecodedIdToken;
+  }
+}
+
+// ! uncomment declare global & bottom braket to enable global types
+// ! this would require going through routes that use the imports and removing all type imports
+// ? declare global {
+  
 export interface Answer {
   answer_content: AnswerContent;
   is_correct: boolean;
@@ -13,15 +26,13 @@ export interface AnswerHistory {
   question_content: QuestionContent;
   answered_correctly: number;
   answered_incorrectly: number;
-  answers: [
-    AnswerHistoryResponse
-  ];
+  answers: [AnswerHistoryResponse];
 }
 
 export interface AnswerHistoryResponse {
-  timestamp: Timestamp,
-  answer: Answer,
-  session_id: string
+  timestamp: Timestamp;
+  answer: Answer;
+  session_id: string;
 }
 
 export interface CompletedQuestion extends Question {
@@ -34,8 +45,8 @@ export interface Difficulty {
 }
 
 export interface NewSessionResponse {
-  sessionObject: Session,
-  needMoreQuestionsFlag: boolean,
+  sessionObject: Session;
+  needMoreQuestionsFlag: boolean;
 }
 
 export interface Question {
@@ -76,16 +87,18 @@ export interface Topic {
 }
 
 export interface TopicSelection {
-  topic: Topic,
-  difficulty: Difficulty
+  topic: Topic;
+  difficulty: Difficulty;
 }
 
 export interface User {
   user_id: string;
   username: string;
-  topic_selection: [
-    TopicSelection
-  ];
+  topic_selection: [TopicSelection];
   is_guest: boolean;
   session_history: Session[];
 }
+
+// ? }
+
+// ? export {};
