@@ -107,3 +107,13 @@ Buiness logic - tell frontend that a user needs to input API key to create new m
 
 ## Answer correction
 - How would this work? something the frontend was thinking of if you get an answer wrong it gives some sort of explanation?? 
+
+
+
+
+# 2/25/24
+## New bugs we created
+- user document/object needs to have an empty sessionHistory array (or one with data)
+
+## Register route
+- need define the api contract for /register so that the frontend can receive a user. Not sure what the backend needs at the moment (or what to include in the headers)
